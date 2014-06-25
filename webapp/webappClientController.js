@@ -189,12 +189,12 @@ function dumpTable(data,containerId,tableId){
     for (index in data['data'].rows){
         if (data['data'].rows.hasOwnProperty(index)) {
             row = document.createElement('tr');
-            for (propertyName in data['data'].rows[index]){
+            for (propertyName in data['data'].columns){
+                td = document.createElement('td');
                 if (data['data'].rows[index].hasOwnProperty(propertyName)) {
-                    td = document.createElement('td');
                     $(td).text(data['data'].rows[index][propertyName]);
-                    row.appendChild(td);
                 }
+                row.appendChild(td);
             }
             tbody.appendChild(row);
         }
