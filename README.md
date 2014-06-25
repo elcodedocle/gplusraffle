@@ -193,6 +193,17 @@ raffled)
 - Raffles' participants lists are stored on a fusion table 'participants' 
 (userid, raffleid, joined)
 
+There are also some phpunit tests you can perform:
+
+```php
+cd tests
+phpunit --testsuite gplusraffle
+```
+
+(If you are a developer and find a bug not catched by the tests and want to 
+help me fix it, opening an issue by pull requesting a non passing test would 
+be swell :-))
+
 ### TODO:
 
 - Switch from Fusion Tables to something more flexible and less experimental.
