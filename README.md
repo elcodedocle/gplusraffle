@@ -151,7 +151,7 @@ didn't put any effort on building a safe app, but bad things happen...)
 
 Users are only required basic profile info access (for the userid). 
 
-For your user's and your own safety and I suggest using SSL on the server. And, 
+For your users' safety and your own I suggest using SSL on the server. And, 
 since I am at the moment too lazy and cheap to follow my own advice on the demo site 
 I've set up, if you are concerned about what somebody could do with access to your 
 account's basic profile info I urge you not to use it on a public/open connection.
