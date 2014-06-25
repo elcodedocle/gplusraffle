@@ -29,8 +29,8 @@ Tables Suck":
  - Fusion tables is not a replacement for an SQL database (Duh!) But even 
  basic, fundamental features such as JOIN on a SELECT query are not allowed 
  (You can still merge two tables on a view and then query that view, which is 
- utterly slow, unefficient and annoying... For F***'s sake, even a simple 
- UPDATE or DELETE can only accept a ROWID = <ROWID> as a WHERE clause! WTF!?)
+ utterly slow, inefficient and annoying); Even a simple UPDATE or DELETE query 
+ is a mess because they can only accept a ROWID = <ROWID> as a WHERE clause...
  
  - Fusion Tables is an experimental project, which means it could be cancelled 
  tomorrow, the next day, or anytime soon. It has been like that since June 
@@ -118,19 +118,22 @@ mv /var/www/gplusraffle/vendor/uuid-master /var/www/gplusraffle/vendor/uuid
  
 Now, for the setup: 
 
- - Edit config.php.dist, fill the required fields with your app's credentials 
+ - Edit config.php.dist, filling the required fields with your app's credentials, 
  and save it as config.php
  
- - Go to /admin/install to set the google account token the app will use to 
- manage fusion tables. This token will be saved on adminToken.php and will 
- allow the app access to the associated account's fusion tables.
+ - Point your browser to /admin/install to set the google account token the app 
+ will use to manage fusion tables. This token will be saved on adminConfig.php 
+ and will allow the app access to the associated account's fusion tables.
+
+ - Now you can /admin/logout and go to /webapp to log in as a regular user and 
+ check the app out.
 
 ### How to use
 
 The web app, `/webapp`, will provide an HTML5 client interface to handle 
 requests and present JSON responses required to manage and participate on raffles.
 
-Actions:
+HTTP request/JSON response actions:
 
 `/admin/login` - logs the user with admin scopes (FusionTables handling), 
 redirects to `$_REQUEST['success_URI']`
@@ -225,8 +228,8 @@ participants table.
 
 [The Google team](https://github.com/google/google-api-php-client). Their 
 Client PHP API 1.0.4 BETA is way more usable than Facebook's PHP SDK v4 (Full 
-disclosure: I tried to submit a pull request to Facebook about it and they 
-told me they liked the idea but they they'd instead incorporate it in their own
+disclosure: I did submit a pull request to Facebook about it and they told me 
+they liked the idea but they they'd instead incorporate it in their own
 way and release it soon, and they haven't done it yet. So, yeah, I'm not very 
 happy about it. That was already 6 weeks ago, guys! Come on!)
 
