@@ -6,6 +6,9 @@ gplusraffle by elcodedocle
  License: [MIT Expat][1]<br />
  Version: v0.1-beta<br />
  [![Build Status](https://travis-ci.org/elcodedocle/gplusraffle.svg?branch=master)](https://travis-ci.org/elcodedocle/gplusraffle)
+ 
+[![Test site snapshot](http://i.imgur.com/CcQ0cQs.png "http://www.geovolutions.com/gplusraffle/webapp Check it out live!")](http://www.geovolutions.com/gplusraffle/webapp)
+
 
 ### Motivation
 
