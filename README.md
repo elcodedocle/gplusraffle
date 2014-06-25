@@ -10,7 +10,7 @@ gplusraffle by elcodedocle
 [![Test site snapshot](http://i.imgur.com/CcQ0cQs.png "http://www.geovolutions.com/gplusraffle/webapp Check it out live!")](http://www.geovolutions.com/gplusraffle/webapp)
 
 
-### Motivation
+### (De)Motivation
 
 Doing an in-site "manual" raffle may be way easier, but doing it online is 
 waaay cooler! (for nerds like me :-))
