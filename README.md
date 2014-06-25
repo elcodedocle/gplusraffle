@@ -22,11 +22,11 @@ Tables is not at all a valid replacement for even the most modest DB needs.
 This project might as well have been called "A study on how and why Fusion 
 Tables Suck":
 
- - Fusion tables is not a replacement for an SQL database. Even basic, 
- fundamental features such as JOIN on a SELECT query are not allowed (You can 
- still merge two tables on a view and then query that view, which is utterly 
- slow, unefficient and annoying.). (For F***'s sake, even a simple UPDATE or 
- DELETE can only accept a ROWID = <ROWID> as a WHERE clause! WTF!?)
+ - Fusion tables is not a replacement for an SQL database (Duh!) But even 
+ basic, fundamental features such as JOIN on a SELECT query are not allowed 
+ (You can still merge two tables on a view and then query that view, which is 
+ utterly slow, unefficient and annoying.). (For F***'s sake, even a simple 
+ UPDATE or DELETE can only accept a ROWID = <ROWID> as a WHERE clause! WTF!?)
  
  - Fusion Tables is an experimental project, which means it could be cancelled 
  tomorrow, the next day, or anytime soon. It has been like that since June 
