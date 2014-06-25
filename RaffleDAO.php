@@ -16,6 +16,19 @@ class RaffleDAO {
     private $tableIds;
     private $fusionTablesService;
     private $debug = false;
+    
+    private function escape_mysql_mbstring($mbstring){
+        $mysqlEscapedMbString = '';
+        for($i = 0; $i < strlen($mbstring); ++$i) {
+            $char = $mbstring[$i];
+            $ord = ord($char);
+            if($char !== "'" && $char !== "\"" && $char !== '\\' && $ord >= 32 && $ord <= 126)
+                $mysqlEscapedMbString .= $char;
+            else
+                $mysqlEscapedMbString .= '\\x' . dechex($ord);
+        }
+        return $mysqlEscapedMbString;
+    }
 
     /**
      * @param \Google_Service_Fusiontables|null $fusionTablesService
@@ -142,7 +155,7 @@ class RaffleDAO {
             $fusionTablesService = $this->fusionTablesService;
         }
         // escaping does nothing or makes injection fail
-        $tableId = mysql_real_escape_string($tableId);
+        $tableId = $this->escape_mysql_mbstring($tableId);
         $sql = "SELECT * FROM {$tableId}";
         $preOperator = '';
         $where = " WHERE ";
@@ -169,24 +182,24 @@ class RaffleDAO {
             $raffleId = '('.rtrim($raffleId,", ").')';
             $raffleIdOperator = 'IN';
         } else if (isset ($raffleId)){
-            $raffleId = "'".mysql_real_escape_string($raffleId)."'";
+            $raffleId = "'".$this->escape_mysql_mbstring($raffleId)."'";
         }
         // Now you do too, I hope.
         
         if (isset ($raffleId)) {
-            $raffleIdOperator =  mysql_real_escape_string($raffleIdOperator);
-            $raffleIdPostOperator =  mysql_real_escape_string(
+            $raffleIdOperator =  $this->escape_mysql_mbstring($raffleIdOperator);
+            $raffleIdPostOperator =  $this->escape_mysql_mbstring(
                 $raffleIdPostOperator
             );
             $where .= "raffleid {$raffleIdOperator} {$raffleId}";
             $preOperator = " {$raffleIdPostOperator} ";
         }
         if (isset ($description)) {
-            $description = mysql_real_escape_string($description);
-            $descriptionOperator = mysql_real_escape_string(
+            $description = $this->escape_mysql_mbstring($description);
+            $descriptionOperator = $this->escape_mysql_mbstring(
                 $descriptionOperator
             );
-            $descriptionPostOperator = mysql_real_escape_string(
+            $descriptionPostOperator = $this->escape_mysql_mbstring(
                 $descriptionPostOperator
             );
             $where .= $preOperator
@@ -194,33 +207,33 @@ class RaffleDAO {
             $preOperator = " {$descriptionPostOperator} "; 
         }
         if (isset ($creatorId)) {
-            $creatorId = mysql_real_escape_string($creatorId);
-            $creatorIdOperator = mysql_real_escape_string($creatorIdOperator);
+            $creatorId = $this->escape_mysql_mbstring($creatorId);
+            $creatorIdOperator = $this->escape_mysql_mbstring($creatorIdOperator);
             $where .= $preOperator
                 . "creatorid {$creatorIdOperator} '{$creatorId}'";
             $preOperator = " {$creatorIdPostOperator} "; 
         }
         if (isset ($created)) {
-            $created = mysql_real_escape_string($created);
-            $createdOperator = mysql_real_escape_string($createdOperator);
-            $createdPostOperator = mysql_real_escape_string(
+            $created = $this->escape_mysql_mbstring($created);
+            $createdOperator = $this->escape_mysql_mbstring($createdOperator);
+            $createdPostOperator = $this->escape_mysql_mbstring(
                 $createdPostOperator
             );
             $where .= $preOperator. "created {$createdOperator} '{$created}'";
             $preOperator = " {$createdPostOperator} "; 
         }
         if (isset ($privacy)) {
-            $privacy = mysql_real_escape_string($privacy);
-            $privacyOperator = mysql_real_escape_string($privacyOperator);
-            $privacyPostOperator = mysql_real_escape_string(
+            $privacy = $this->escape_mysql_mbstring($privacy);
+            $privacyOperator = $this->escape_mysql_mbstring($privacyOperator);
+            $privacyPostOperator = $this->escape_mysql_mbstring(
                 $privacyPostOperator
             );
             $where .= $preOperator. "privacy {$privacyOperator} '{$privacy}'";
             $preOperator = " {$privacyPostOperator} "; 
         }
         if (isset ($status)) {
-            $status = mysql_real_escape_string($status);
-            $statusOperator = mysql_real_escape_string($statusOperator);
+            $status = $this->escape_mysql_mbstring($status);
+            $statusOperator = $this->escape_mysql_mbstring($statusOperator);
             $where .= $preOperator. "status {$statusOperator} '{$status}'";
         }
 
@@ -278,25 +291,25 @@ class RaffleDAO {
             $fusionTablesService = $this->fusionTablesService;
         }
         // escaping does nothing or makes injection fail
-        $tableId = mysql_real_escape_string($tableId);
+        $tableId = $this->escape_mysql_mbstring($tableId);
         $sql = "SELECT * FROM {$tableId}";
         $preOperator = '';
         $where = " WHERE ";
         if (isset ($raffleId)) {
-            $raffleId = mysql_real_escape_string($raffleId);
-            $raffleIdOperator =  mysql_real_escape_string($raffleIdOperator);
-            $raffleIdPostOperator =  mysql_real_escape_string(
+            $raffleId = $this->escape_mysql_mbstring($raffleId);
+            $raffleIdOperator =  $this->escape_mysql_mbstring($raffleIdOperator);
+            $raffleIdPostOperator =  $this->escape_mysql_mbstring(
                 $raffleIdPostOperator
             );
             $where .= "raffleid {$raffleIdOperator} '{$raffleId}'";
             $preOperator = " {$raffleIdPostOperator} ";
         }
         if (isset ($winnerId)) {
-            $winnerId = mysql_real_escape_string($winnerId);
-            $winnerIdOperator = mysql_real_escape_string(
+            $winnerId = $this->escape_mysql_mbstring($winnerId);
+            $winnerIdOperator = $this->escape_mysql_mbstring(
                 $winnerIdOperator
             );
-            $winnerIdPostOperator = mysql_real_escape_string(
+            $winnerIdPostOperator = $this->escape_mysql_mbstring(
                 $winnerIdPostOperator
             );
             $where .= $preOperator
@@ -304,8 +317,8 @@ class RaffleDAO {
             $preOperator = " {$winnerIdPostOperator} ";
         }
         if (isset ($raffled)) {
-            $raffled = mysql_real_escape_string($raffled);
-            $raffledOperator = mysql_real_escape_string($raffledOperator);
+            $raffled = $this->escape_mysql_mbstring($raffled);
+            $raffledOperator = $this->escape_mysql_mbstring($raffledOperator);
             $where .= $preOperator. "raffled {$raffledOperator} '{$raffled}'";
         }
 
@@ -362,25 +375,25 @@ class RaffleDAO {
             $fusionTablesService = $this->fusionTablesService;
         }
         // escaping does nothing or makes injection fail
-        $tableId = mysql_real_escape_string($tableId);
+        $tableId = $this->escape_mysql_mbstring($tableId);
         $sql = "SELECT * FROM {$tableId}";
         $preOperator = '';
         $where = " WHERE ";
         if (isset ($raffleId)) {
-            $raffleId = mysql_real_escape_string($raffleId);
-            $raffleIdOperator =  mysql_real_escape_string($raffleIdOperator);
-            $raffleIdPostOperator =  mysql_real_escape_string(
+            $raffleId = $this->escape_mysql_mbstring($raffleId);
+            $raffleIdOperator =  $this->escape_mysql_mbstring($raffleIdOperator);
+            $raffleIdPostOperator =  $this->escape_mysql_mbstring(
                 $raffleIdPostOperator
             );
             $where .= "raffleid {$raffleIdOperator} '{$raffleId}'";
             $preOperator = " {$raffleIdPostOperator} ";
         }
         if (isset ($participantId)) {
-            $participantId = mysql_real_escape_string($participantId);
-            $participantIdOperator = mysql_real_escape_string(
+            $participantId = $this->escape_mysql_mbstring($participantId);
+            $participantIdOperator = $this->escape_mysql_mbstring(
                 $participantIdOperator
             );
-            $participantIdPostOperator = mysql_real_escape_string(
+            $participantIdPostOperator = $this->escape_mysql_mbstring(
                 $participantIdPostOperator
             );
             $where .= $preOperator
@@ -388,8 +401,8 @@ class RaffleDAO {
             $preOperator = " {$participantIdPostOperator} ";
         }
         if (isset ($joined)) {
-            $joined = mysql_real_escape_string($joined);
-            $joinedOperator = mysql_real_escape_string($joinedOperator);
+            $joined = $this->escape_mysql_mbstring($joined);
+            $joinedOperator = $this->escape_mysql_mbstring($joinedOperator);
             $where .= $preOperator. "joined {$joinedOperator} '{$joined}'";
         }
 
@@ -425,8 +438,8 @@ class RaffleDAO {
             $fusionTablesService = $this->fusionTablesService; 
         }
         // escaping does nothing or makes injection fail
-        $tableId = mysql_real_escape_string($tableId); 
-        $raffleId = mysql_real_escape_string($raffleId);
+        $tableId = $this->escape_mysql_mbstring($tableId); 
+        $raffleId = $this->escape_mysql_mbstring($raffleId);
 
         $sql = "SELECT * FROM {$tableId} WHERE raffleid = '{$raffleId}'"
             .(
@@ -486,33 +499,33 @@ class RaffleDAO {
 
 
         if ($privacy === null) { $privacy = 'public'; }  else {
-            $privacy = mysql_real_escape_string($privacy);
+            $privacy = $this->escape_mysql_mbstring($privacy);
         }
         if ($status === null) { $status = 'closed'; } else {
-            $status = mysql_real_escape_string($status);
+            $status = $this->escape_mysql_mbstring($status);
         }
         
         if ($created === null) { 
             $created = date("Y-m-d H:i:s"); 
         } else {
-            $created = mysql_real_escape_string($created);
+            $created = $this->escape_mysql_mbstring($created);
         }
         if ($raffleId === null) { 
             $raffleId = uuid::v5(
                 uuid::v4(), 'synapp\\info\\tools\\gplusraffle'
             ); 
         } else {
-            $raffleId = mysql_real_escape_string($raffleId);
+            $raffleId = $this->escape_mysql_mbstring($raffleId);
         }
         if ($tableId === null || $tableId === 'raffles') { 
-            $tableId = mysql_real_escape_string(
+            $tableId = $this->escape_mysql_mbstring(
                 $this->tableIds['raffles']
             ); 
         } else {
-            $tableId = mysql_real_escape_string($tableId);
+            $tableId = $this->escape_mysql_mbstring($tableId);
         }
-        $userId = mysql_real_escape_string($userId);
-        $description = mysql_real_escape_string($description);
+        $userId = $this->escape_mysql_mbstring($userId);
+        $description = $this->escape_mysql_mbstring($description);
         if ($fusionTablesService===null) {
             $fusionTablesService = $this->fusionTablesService; 
         }
@@ -578,16 +591,16 @@ class RaffleDAO {
             $fusionTablesService = $this->fusionTablesService; 
         }
         // escaping does nothing or makes injection fail
-        $rafflesTableId = mysql_real_escape_string(
+        $rafflesTableId = $this->escape_mysql_mbstring(
             $tableIds['raffles']
         ); 
-        $participantsTableId = mysql_real_escape_string(
+        $participantsTableId = $this->escape_mysql_mbstring(
             $tableIds['participants']
         ); 
-        $winnersTableId = mysql_real_escape_string(
+        $winnersTableId = $this->escape_mysql_mbstring(
             $tableIds['winners']
         ); 
-        $raffleId = mysql_real_escape_string($raffleId);
+        $raffleId = $this->escape_mysql_mbstring($raffleId);
 
 
         $sql = "SELECT ROWID FROM {$rafflesTableId} WHERE raffleid = '{$raffleId}'";
@@ -647,10 +660,10 @@ class RaffleDAO {
         if ($tableId === null || $tableId === 'participants') { $tableId = $this->tableIds['participants']; }
         if ($joined === null) { $joined = date("Y-m-d H:i:s"); }
 
-        $userId = mysql_real_escape_string($userId);
-        $raffleId = mysql_real_escape_string($raffleId);
-        $joined = mysql_real_escape_string($joined);
-        $tableId = mysql_real_escape_string($tableId);
+        $userId = $this->escape_mysql_mbstring($userId);
+        $raffleId = $this->escape_mysql_mbstring($raffleId);
+        $joined = $this->escape_mysql_mbstring($joined);
+        $tableId = $this->escape_mysql_mbstring($tableId);
         // add $userId to $raffleId participants on participants table
         $sql = "INSERT INTO {$tableId} "
             ."('raffleid','participantid','comment','joined') "
@@ -684,9 +697,9 @@ class RaffleDAO {
         }
         if ($tableId === null || $tableId === 'participants') { $tableId = $this->tableIds['participants']; }
 
-        $userId = mysql_real_escape_string($userId);
-        $raffleId = mysql_real_escape_string($raffleId);
-        $tableId = mysql_real_escape_string($tableId);
+        $userId = $this->escape_mysql_mbstring($userId);
+        $raffleId = $this->escape_mysql_mbstring($raffleId);
+        $tableId = $this->escape_mysql_mbstring($tableId);
         // delete $userId where raffleid = $raffleId on participants table
 
         $sql = "SELECT ROWID FROM {$tableId} WHERE raffleid = '{$raffleId}' AND participantid = '{$userId}'";
@@ -734,10 +747,10 @@ class RaffleDAO {
         if ($tableId === null) { $tableId = $this->tableIds['winners']; }
         if ($raffled === null) { $raffled = date("Y-m-d H:i:s"); }
 
-        $userId = mysql_real_escape_string($userId);
-        $raffleId = mysql_real_escape_string($raffleId);
-        $raffled = mysql_real_escape_string($raffled);
-        $tableId = mysql_real_escape_string($tableId);
+        $userId = $this->escape_mysql_mbstring($userId);
+        $raffleId = $this->escape_mysql_mbstring($raffleId);
+        $raffled = $this->escape_mysql_mbstring($raffled);
+        $tableId = $this->escape_mysql_mbstring($tableId);
         // add $userId to $raffleId participants table
         $sql = "INSERT INTO {$tableId} "
             ."('raffleid','winnerid','raffled') "
@@ -781,8 +794,8 @@ class RaffleDAO {
         }
 
 
-        $raffleId = mysql_real_escape_string($raffleId);
-        $tableId = mysql_real_escape_string($tableId);
+        $raffleId = $this->escape_mysql_mbstring($raffleId);
+        $tableId = $this->escape_mysql_mbstring($tableId);
 
         $simpleResultObject = $this->getResultsForRaffleId(
             $raffleId, 
@@ -900,8 +913,8 @@ class RaffleDAO {
             $tableId = $this->tableIds['raffles']; 
         }
 
-        $raffleId = mysql_real_escape_string($raffleId);
-        $status = mysql_real_escape_string($status);
+        $raffleId = $this->escape_mysql_mbstring($raffleId);
+        $status = $this->escape_mysql_mbstring($status);
 
         if (!isset($raffleId)){
             throw new Exception('Must specify a raffle',400);
