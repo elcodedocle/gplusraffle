@@ -12,7 +12,7 @@ gplusraffle by elcodedocle
 
 ### Motivation
 
-Doing an in-site "manual" raffle may be way easier, but doing it online it's 
+Doing an in-site "manual" raffle may be way easier, but doing it online is 
 waaay cooler! (for nerds like me :-))
 
 (Also, I needed to get to know better the latest google PHP client API, what 
