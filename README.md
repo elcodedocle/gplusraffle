@@ -72,13 +72,13 @@ you have trouble with that process, check out
 
 #### Using composer:
 
- - get [composer](http://getcomposer.org):
+ - Get [composer](http://getcomposer.org):
  
 ```
 curl -sS https://getcomposer.org/installer | php
 ```
 
- - install the app from [packagist](https://packagist.org/packages/elcodedocle/gplusraffle) repo:
+ - Install the app from [packagist](https://packagist.org/packages/elcodedocle/gplusraffle) repo:
  
 ```
 php composer.phar require elcodedocle/gplusraffle 0.1.*@beta
