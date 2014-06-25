@@ -3,8 +3,9 @@ gplusraffle by elcodedocle
 #####*A Google OAuth 2.0 and FusionTables PHP API client based raffle manager*
 
  Copyright (C) 2014 Gael Abadin<br/>
- License: [MIT Expat][1]
- Version: v0.1-beta
+ License: [MIT Expat][1]<br />
+ Version: v0.1-beta<br />
+ [![Build Status](https://travis-ci.org/elcodedocle/gplusraffle.svg?branch=master)](https://travis-ci.org/elcodedocle/gplusraffle)
 
 ### Motivation
 
