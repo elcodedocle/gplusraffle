@@ -15,7 +15,7 @@ gplusraffle by elcodedocle
 Doing an in-site "manual" raffle may be way easier, but doing it online is 
 waaay cooler! (for nerds like me :-))
 
-(Also, I needed to get to know better the latest google PHP client API, what 
+(Also, I needed to get to know better the latest google PHP client API: What 
 better way than doing a simple and cool app ;-))
 
 This is a proof of concept app, which means it works fine but it lacks anything
