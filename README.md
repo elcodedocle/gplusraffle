@@ -4,7 +4,7 @@ gplusraffle by elcodedocle
 
  Copyright (C) 2014 Gael Abadin<br/>
  License: [MIT Expat][1]<br />
- Version: v0.1-beta<br />
+ Version: 0.1.0-beta<br />
  [![Build Status](https://travis-ci.org/elcodedocle/gplusraffle.svg?branch=master)](https://travis-ci.org/elcodedocle/gplusraffle)
  
 [![Test site snapshot](http://i.imgur.com/CcQ0cQs.png "http://www.geovolutions.com/gplusraffle/webapp Check it out live!")](http://www.geovolutions.com/gplusraffle/webapp)
@@ -30,7 +30,8 @@ Tables Suck":
  basic, fundamental features such as JOIN on a SELECT query are not allowed 
  (You can still merge two tables on a view and then query that view, which is 
  utterly slow, inefficient and annoying); Even a simple UPDATE or DELETE query 
- is a mess because they can only accept a ROWID = <ROWID> as a WHERE clause...
+ is a mess because they can only accept a ROWID = <ROWID> as a WHERE clause
+ condition...
  
  - Fusion Tables is an experimental project, which means it could be cancelled 
  tomorrow, the next day, or anytime soon. It has been like that since June 
@@ -48,43 +49,52 @@ scalable Cloud DB service I suggest you try AWS or Google Cloud SQL or
 something like that instead of Fusion Tables. I'll be the last one encouraging 
 anybody to make serious use of this project without replacing the DAOs first to 
 use any other service, at the very least. (I intend to do so myself if I ever 
-release an update beyond patching the bugs I find on this version)
+release an update beyond patching the bugs I will find on this version)
 
 ### Requirements
 
  - PHP >=5.3 with curl extensions enabled
  - (mostly recommended) Apache 2 with mod_rewrite enabled for .htaccess URI 
  rewriting, although you can use any other web server by porting the required 
- rewrite rules
- - (highly recommended) Linux 
+ rewrite rules, (and the webapp doesn't depend on them anyway)
+ - (highly recommended) Linux server, with SSL enabled (but not the 
+ heartbleed version :P)
  
 (So, basically, any updated default LAMP stack, even without the M)
 
-### Installation & Set up
+### Installation
 
-Assuming you already have a google app and the required 
-[oAuth credentials](https://developers.google.com/+/api/oauth)
+This assumes you have already created a google app and the required oAuth 2.0 
+credentials and activated the Fusion Tables API on 
+[console.developers.google.com](http://console.developers.google.com). If 
+you have trouble with that process, check out
+[this tutorial](https://developers.google.com/+/api/oauth).
+
+## Using composer:
+
+ - get [composer](http://getcomposer.org):
+ 
+```
+curl -sS https://getcomposer.org/installer | php
+```
+
+ - install the app from [packagist](https://packagist.org/packages/elcodedocle/gplusraffle) repo:
+ 
+```
+php composer.phar require elcodedocle/gplusraffle 0.1.*@beta
+```
+
+ 
+## Without composer:
 
 - Download and unzip the 
 [latest version](https://github.com/elcodedocle/gplusraffle/archive/master.zip) 
-from the git repo on a public folder on your web server, e.g.:
+of this project from the git repo on a public folder on your web server, e.g.:
 
 ```bash
 wget https://github.com/elcodedocle/gplusraffle/archive/master.zip -O gplusraffle.zip
 unzip gplusraffle.zip -d /var/www
 ```
-
-## Using composer:
-
- - get [composer](http://getcomposer.org), e.g. (on /gplusraffle):
- 
-`curl -sS https://getcomposer.org/installer | php`
-
- - get dependencies. On /gplusraffle (where composer.json is located), run: 
- 
- `php composer.phar install`
- 
-## Without composer:
 
  - Download and extract the latest version (1.0.X) of the google api php client
  to /gplusraffle/vendor/google, renaming the dir to apiclient e.g.:
@@ -116,36 +126,61 @@ mv /var/www/gplusraffle/vendor/uuid-master /var/www/gplusraffle/vendor/uuid
 (You may also want to get [phpunit](http://phpunit.de), if you want to run some
  tests.)
  
-Now, for the setup: 
+### Set up: 
 
  - Edit config.php.dist, filling the required fields with your app's credentials, 
  and save it as config.php
  
- - Point your browser to /admin/install to set the google account token the app 
- will use to manage fusion tables. This token will be saved on adminConfig.php 
- and will allow the app access to the associated account's fusion tables.
+ - Point your browser to /admin/login (main.php?collection=admin&action=login) and 
+ then to /admin/install (main.php?collection=admin&action=install) 
 
- - Now you can /admin/logout and go to /webapp to log in as a regular user and 
- check the app out.
+This will set the google account token the app will use to manage fusion tables. 
+ 
+This token will be saved on adminConfig.php and will allow the app access to the 
+associated account's fusion tables. 
+
+You don't need to use the same google account you used for creating the app on the 
+developers console: You may even create a new google account just to keep the 
+app's tables if you want. 
+
+Anyway, the token will only give the app offline access to the Fusion Tables and 
+basic profile info of that account (to retrieve the account id), so even if I've 
+screwed up and left some security hole on the auth process it should be a 
+reasonably safe deal no matter what account you use (I'm not implying that I 
+didn't put any effort on building a safe app, but bad things happen...) 
+
+Users are only required basic profile info access (for the userid). 
+
+For your user's and your own safety and I suggest using SSL on the server. And, 
+since I am at the moment too lazy and cheap to follow my own advice on the demo site 
+I've set up, if you are concerned about what somebody could do with access to your 
+account's basic profile info I urge you not to use it on a public/open connection.
 
 ### How to use
+
+ - Now you can /admin/logout (main.php?collection=admin&action=logout) and go to 
+ /webapp to log in as a regular user and check the app out.
 
 The web app, `/webapp`, will provide an HTML5 client interface to handle 
 requests and present JSON responses required to manage and participate on raffles.
 
-HTTP request/JSON response actions:
+If you want to toy around with the API (maybe even implement a slicker client ;-)), 
+these are HTTP request actions available (all responses are JSON encoded, with 
+resposne column names array and rows array contained on `columns` and `rows` fields 
+of the `data` response field):
 
-`/admin/login` - logs the user with admin scopes (FusionTables handling), 
-redirects to `$_REQUEST['success_URI']`
+`/admin/login` - logs the user with admin scopes (FusionTables handling, basic 
+profile access)
 
 `/admin/install` - sets the current admin google account id and a new token to 
 handle fusion tables operations
 
 `/admin/uninstall` - removes the current admin google account id and token (the 
-fusion table will remain on the account)
+fusion tables will remain stored on the account, but new ones will be created on 
+reinstall)
 
-`/, /user/login` - logs in the user (html output with authUri link), redirects 
-to `/raffle/list/open` or `$_REQUEST['success_URI']` on success
+`/, /user/login` - logs in the user (html output with `authUrl` link), redirects 
+to `/webapp` on success if a web session has been opened (by visiting /webapp)
 
 `/user/logout` - logs out the user
 
@@ -181,10 +216,10 @@ of creation)
 `/raffle/close/raffleid`  - closes the raffle, no more users will be allowed to 
 join it, unless it's reopened
 
-`/raffle/raffleid` - raffles `raffleid` (only the user who created the raffle 
+`/raffle/raffleid/limit` - raffles `raffleid` (only the user who created the raffle 
 can do this, and the raffle must be closed and have more than 0 participants. 
-It picks a random winner or returns the winner if the raffle has already been 
-raffled)
+It picks min(participants,limit) winners or returns the winner(s) if the raffle has 
+already been raffled)
 
 `/raffle/join/raffleid` - user joins `raffleid` (the raffle must be opened)
 
@@ -192,15 +227,17 @@ raffled)
 
 `/raffle/check/raffleid` - check who won the raffle (the raffle must be raffled)
 
-- Raffles list is stored on a fusion table 'raffles' 
+Regarding the DB schema, it's actually the simplest possible:
+
+- The raffles list is stored on a fusion table 'raffles' 
 (raffleid, description, creatorid, created, privacy, status)
 
-- Winners list is stored on a fusion table 'winners' (raffleid, userid, raffled)
+- The winners list is stored on a fusion table 'winners' (raffleid, userid, raffled)
 
-- Raffles' participants lists are stored on a fusion table 'participants' 
-(userid, raffleid, joined)
+- The raffles' participants lists are stored on a fusion table 'participants' 
+(userid, raffleid, comment, joined)
 
-There are also some phpunit tests you can perform:
+If you are into developing there are also some phpunit tests you can perform:
 
 ```php
 cd tests
