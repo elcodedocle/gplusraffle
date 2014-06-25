@@ -8,7 +8,7 @@
  * @package gplusraffle
  * @copyright Gael Abadin 2014
  * @license MIT Expat
- * @version v0.1-beta
+ * @version v0.1.0-beta
  * 
  */
 session_start();
@@ -37,7 +37,7 @@ $subtitle = array(
             Google plus raffle app 
             Copyright (c) Gael Abadin (elcodedocle) 2014
             License: MIT Expat
-            Version: v0.1-beta
+            Version: v0.1.0-beta
         -->
         <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
         <meta charset="UTF-8" />

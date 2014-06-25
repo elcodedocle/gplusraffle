@@ -6,7 +6,7 @@
  * @package gplusraffle
  * @copyright Gael Abadin 2014
  * @license MIT Expat
- * @version 0.1-beta
+ * @version v0.1.0-beta
  * 
  * Raffle Data Access Object class
  */ 

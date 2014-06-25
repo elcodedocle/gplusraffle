@@ -11,7 +11,7 @@
  * @package gplusraffle
  * @copyright Gael Abadin 2014
  * @license MIT Expat
- * @version v0.1-beta
+ * @version v0.1.0-beta
  * 
  */
 use synapp\info\tools\uuid\uuid;
