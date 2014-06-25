@@ -21,7 +21,7 @@ better way than doing a simple and cool app? ;-))
 This is a proof of concept app, which means it works fine but it lacks anything
 else but a rough basic functionality, although it should be easily extensible.
 
-Anyway, the main thing I've learn from developing this project is that Fusion 
+Anyway, the main thing I've learned from developing this project is that Fusion 
 Tables is not at all a valid replacement for even the most modest DB needs. 
 This project might as well have been called "A study on how and why Fusion 
 Tables Suck":
