@@ -70,7 +70,7 @@ credentials and activated the Fusion Tables API on
 you have trouble with that process, check out
 [this tutorial](https://developers.google.com/+/api/oauth).
 
-## Using composer:
+#### Using composer:
 
  - get [composer](http://getcomposer.org):
  
@@ -85,7 +85,7 @@ php composer.phar require elcodedocle/gplusraffle 0.1.*@beta
 ```
 
  
-## Without composer:
+#### Without composer:
 
 - Download and unzip the 
 [latest version](https://github.com/elcodedocle/gplusraffle/archive/master.zip) 
