@@ -1,0 +1,16 @@
+<phpunit colors="true" bootstrap="bootstrap.php">
+    <!--
+    <filter>
+        <blacklist>
+           <directory suffix=".php">./</directory>
+        </blacklist>
+    </filter>
+    -->
+    <testsuites>
+        <testsuite name="gplusraffle">
+            <file>AdminTest.php</file>
+            <file>UserTest.php</file>
+            <file>RaffleTest.php</file>
+        </testsuite>
+    </testsuites>
+</phpunit>

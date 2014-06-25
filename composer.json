@@ -1,0 +1,19 @@
+{
+    "name": "elcodedocle/gplusraffle",
+    "type": "webapp",
+    "description": "Google API based raffle web app",
+    "keywords": ["google", "google plus", "raffle", "web app"],
+    "homepage": "https://github.com/elcodedocle/gplusraffle",
+    "license": "MIT-Expat",
+    "require-dev": {
+        "phpunit/phpunit": "3.7.*"
+    },
+    "require": {
+        "php": ">=5.3.0",
+        "google/apiclient": "1.0.*@beta",
+        "datatables/datatables": "1.9.4",
+        "drmonty/datatables-tabletools": "2.1.5",
+        "twbs/bootstrap": "3.0.0",
+        "elcodedocle/uuid": ">=1.0.0"
+    }
+}

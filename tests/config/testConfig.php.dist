@@ -1,0 +1,8 @@
+<?php
+$config = array(
+    'client_id' => '',
+    'client_secret' => '',
+    'redirect_uri' => '', // path to login callback, e.g. http://myapp.com/gplusraffle/user/login
+    'admin_redirect_uri' => '', // path to login callback, e.g. http://myapp.com/gplusraffle/admin/login
+);
+

@@ -1,0 +1,40 @@
+#
+# gplusraffle - Google API PHP OAuth 2.0 and FusionTables client based raffle 
+# management system
+# Copyright (c) Gael Abadin 2014
+# License: MIT Expat
+#
+# Rewrite rules for the REST API
+#
+# This file rewirtes the raffle operations for cleaner urls
+
+Options -Indexes
+RewriteEngine On
+RewriteBase /gplusraffle
+
+RewriteRule ^user/login(/)?$ main.php?collection=user&action=login&%{QUERY_STRING} [PT,NC,L]
+#RewriteRule ^user/login(/)?$ tests/fusionTablesTest.php?%{QUERY_STRING} [PT,NC,L]
+RewriteRule ^user/logout(/)?$ main.php?collection=user&action=logout&%{QUERY_STRING} [PT,NC,L]
+RewriteRule ^user/(.*)$ $1 [PT,NC,L]
+RewriteRule ^raffle/list/open(/(.+))?(/(.*)(/)?)?$ main.php?collection=raffle&action=list&status=open&raffleid=$2&%{QUERY_STRING}&resource=$4 [PT,NC,L]
+RewriteRule ^raffle/list/me(/(.+))?(/(.*)(/)?)?$ main.php?collection=raffle&action=list&userid=me&raffleid=$2&%{QUERY_STRING}&resource=$4 [PT,NC,L]
+RewriteRule ^raffle/list/user/joined/me(/(.+))?(/(.*)(/)?)?$ main.php?collection=raffle&action=list&userid=me&raffleid=$2&%{QUERY_STRING}&resource=$4 [PT,NC,L]
+RewriteRule ^raffle/list/mine(/(.+))?(/(.*)(/)?)?$ main.php?collection=raffle&action=list&creatorid=me&raffleid=$2&%{QUERY_STRING}&resource=$4 [PT,NC,L]
+RewriteRule ^raffle/list/user/created/me(/(.+))?(/(.*)(/)?)?$ main.php?collection=raffle&action=list&creatorid=me&raffleid=$2&%{QUERY_STRING}&resource=$4 [PT,NC,L]
+RewriteRule ^raffle/list/closed(/(.+))?(/(.*)(/)?)?$ main.php?collection=raffle&action=list&status=closed&raffleid=$2&%{QUERY_STRING}&resource=$4 [PT,NC,L]
+RewriteRule ^raffle/list/raffled(/(.+))?(/(.*)(/)?)?$ main.php?collection=raffle&action=list&status=raffled&raffleid=$2&%{QUERY_STRING}&resource=$4 [PT,NC,L]
+RewriteRule ^raffle/list(/all)?(/(.+))?(/(.*)(/)?)?$ main.php?collection=raffle&action=list&raffleid=$3&%{QUERY_STRING}&resource=$5 [PT,NC,L]
+RewriteRule ^raffle/open/(.+?)(/(.*)(/)?)?$ main.php?collection=raffle&action=open&raffleid=$1&%{QUERY_STRING}&resource=$3 [PT,NC,L]
+RewriteRule ^raffle/close/(.+?)(/(.*)(/)?)?$ main.php?collection=raffle&action=close&raffleid=$1&%{QUERY_STRING}&resource=$3 [PT,NC,L]
+RewriteRule ^raffle/raffle/(.+?)(/(.*)(/)?)?$ main.php?collection=raffle&action=raffle&raffleid=$1&limit=$3&%{QUERY_STRING} [PT,NC,L]
+RewriteRule ^raffle/create/(.+?)(/(.*)(/)?)?$ main.php?collection=raffle&action=create&description=$1&%{QUERY_STRING}&resource=$3 [PT,NC,L]
+RewriteRule ^raffle/delete/(.+?)(/(.*)(/)?)?$ main.php?collection=raffle&action=delete&raffleid=$1&%{QUERY_STRING}&resource=$3 [PT,NC,L]
+RewriteRule ^raffle/join/(.+?)(/(.*)(/)?)?$ main.php?collection=raffle&action=join&raffleid=$1&comment=$3&%{QUERY_STRING} [PT,NC,L]
+RewriteRule ^raffle/leave/(.+?)(/(.*)(/)?)?$ main.php?collection=raffle&action=leave&raffleid=$1&%{QUERY_STRING}&resource=$3 [PT,NC,L]
+RewriteRule ^raffle/check/(.+?)(/(.*)(/)?)?$ main.php?collection=raffle&action=check&raffleid=$1&%{QUERY_STRING}&resource=$3 [PT,NC,L]
+RewriteRule ^raffle/(.+?)(/(.*)(/)?)?$ main.php?collection=raffle&action=raffle&raffleid=$1&limit=$3&%{QUERY_STRING} [PT,NC,L]
+RewriteRule ^admin/login(/)?$ main.php?collection=admin&action=login&%{QUERY_STRING} [PT,NC,L]
+RewriteRule ^admin/logout(/)?$ main.php?collection=admin&action=logout&%{QUERY_STRING} [PT,NC,L]
+RewriteRule ^admin/install(/(.*)(/)?)?$ main.php?collection=admin&action=install&%{QUERY_STRING}&resource=$2 [PT,NC,L]
+RewriteRule ^admin/uninstall(/(.*)(/)?)?$ main.php?collection=admin&action=uninstall&%{QUERY_STRING}&resource=$2 [PT,NC,L]
+RewriteRule ^admin/(.*)$ $1 [PT,NC,L]

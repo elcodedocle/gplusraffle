@@ -1,0 +1,8 @@
+.idea/*
+vendor/*
+components/*
+composer.lock
+composer.phar
+config.php
+adminConfig.php
+tests/config/testConfig.php
