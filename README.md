@@ -131,8 +131,8 @@ mv /var/www/gplusraffle/vendor/uuid-master /var/www/gplusraffle/vendor/uuid
  - Edit config.php.dist, filling the required fields with your app's credentials, 
  and save it as config.php
  
- - Point your browser to /admin/login (main.php?collection=admin&action=login) and 
- then to /admin/install (main.php?collection=admin&action=install) 
+ - Point your browser to `/admin/login` (`/main.php?collection=admin&action=login`) 
+ and then to `/admin/install` (`/main.php?collection=admin&action=install`) 
 
 This will set the google account token the app will use to manage fusion tables. 
  
@@ -158,8 +158,8 @@ account's basic profile info I urge you not to use it on a public/open connectio
 
 ### How to use
 
- - Now you can /admin/logout (main.php?collection=admin&action=logout) and go to 
- /webapp to log in as a regular user and check the app out.
+ - You can now `/admin/logout` (`main.php?collection=admin&action=logout`) and go to 
+ `/webapp` to log in as a regular user and check the app out.
 
 The web app, `/webapp`, will provide an HTML5 client interface to handle 
 requests and present JSON responses required to manage and participate on raffles.
