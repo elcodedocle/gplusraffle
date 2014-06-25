@@ -689,11 +689,7 @@ class RaffleDAOMockup {
         }
         if ($tableId === null) { $tableId = $this->tableIds['winners']; }
         if ($raffled === null) { $raffled = date("Y-m-d H:i:s"); }
-
-        $userId = mysql_real_escape_string($userId);
-        $raffleId = mysql_real_escape_string($raffleId);
-        $raffled = mysql_real_escape_string($raffled);
-        $tableId = mysql_real_escape_string($tableId);
+        
         // add $userId to $raffleId participants on participants table
         $row = array(
             $raffleId,
