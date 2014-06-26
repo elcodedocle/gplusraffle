@@ -12,10 +12,10 @@ Options -Indexes
 RewriteEngine On
 RewriteBase /gplusraffle
 
+RewriteRule ^(user|admin|raffle)(/.*?)?/(webapp|main.php)(/.*)?$ webapp$4 [R]
 RewriteRule ^user/login(/)?$ main.php?collection=user&action=login&%{QUERY_STRING} [PT,NC,L]
 #RewriteRule ^user/login(/)?$ tests/fusionTablesTest.php?%{QUERY_STRING} [PT,NC,L]
 RewriteRule ^user/logout(/)?$ main.php?collection=user&action=logout&%{QUERY_STRING} [PT,NC,L]
-RewriteRule ^user/(.*)$ $1 [PT,NC,L]
 RewriteRule ^raffle/list/open(/(.+))?(/(.*)(/)?)?$ main.php?collection=raffle&action=list&status=open&raffleid=$2&%{QUERY_STRING}&resource=$4 [PT,NC,L]
 RewriteRule ^raffle/list/me(/(.+))?(/(.*)(/)?)?$ main.php?collection=raffle&action=list&userid=me&raffleid=$2&%{QUERY_STRING}&resource=$4 [PT,NC,L]
 RewriteRule ^raffle/list/user/joined/me(/(.+))?(/(.*)(/)?)?$ main.php?collection=raffle&action=list&userid=me&raffleid=$2&%{QUERY_STRING}&resource=$4 [PT,NC,L]
@@ -37,4 +37,3 @@ RewriteRule ^admin/login(/)?$ main.php?collection=admin&action=login&%{QUERY_STR
 RewriteRule ^admin/logout(/)?$ main.php?collection=admin&action=logout&%{QUERY_STRING} [PT,NC,L]
 RewriteRule ^admin/install(/(.*)(/)?)?$ main.php?collection=admin&action=install&%{QUERY_STRING}&resource=$2 [PT,NC,L]
 RewriteRule ^admin/uninstall(/(.*)(/)?)?$ main.php?collection=admin&action=uninstall&%{QUERY_STRING}&resource=$2 [PT,NC,L]
-RewriteRule ^admin/(.*)$ $1 [PT,NC,L]

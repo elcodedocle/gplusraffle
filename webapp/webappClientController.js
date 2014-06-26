@@ -54,12 +54,26 @@ function requestAndProcessPageJSONData(request){
             if (xmlhttp.responseText) {
                 //console.log(xmlhttp.responseText);
                 data=JSON.parse(xmlhttp.responseText);
-                //generate and dump table on #dataTable div
-                dumpTable(data,'dataTable','theMotherOfAllTables');
-                //initialize datatables features and styling
-                fireDataTables('theMotherOfAllTables');
-                //set output text on some other fields
-                $('#execTime').text(data['execTime']);
+                    if (
+                        typeof data === 'object'
+                    ){
+                        if (
+                            data.hasOwnProperty('data') &&
+                                typeof data.data === 'object' &&
+                                data['data'].hasOwnProperty('columns')
+                        ){
+                            //generate and dump table on #dataTable div
+                            dumpTable(data,'dataTable','theMotherOfAllTables');
+                            //initialize datatables features and styling
+                            fireDataTables('theMotherOfAllTables');
+                        }
+                        if (data.hasOwnProperty('execTime')){
+                            //set output text on some other fields
+                            $('#execTime').text(data['execTime']);
+                        } else {
+                            $('#execTime').text('');
+                        }
+                    }
                 //set the url to reflect the parameters of the JSON acquired
                 //path = /^([\w\W]*\/)\d+\/\d+\/\d+(\/[\w\W]*)$/.exec(window.location.pathname);
                 //path=(path===null)?window.location.pathname:path[1];
