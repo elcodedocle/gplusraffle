@@ -78,7 +78,7 @@ function requestAndProcessPageJSONData(request){
                     {
                         'collection':'raffle',
                         'action':'list',
-                        'creatorid':'mine',
+                        'userid':'me',
                         'subtitle': subtitle
                     }
                 );
