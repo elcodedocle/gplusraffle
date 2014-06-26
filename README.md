@@ -81,7 +81,7 @@ curl -sS https://getcomposer.org/installer | php
  - Install the app from [packagist](https://packagist.org/packages/elcodedocle/gplusraffle) repo:
  
 ```
-php composer.phar require google/apiclient 1.0.4-beta elcodedocle/gplusraffle 0.1.*@beta
+php composer.phar create-project -s "beta" elcodedocle/gplusraffle
 ```
 
  
