@@ -9,7 +9,7 @@
  * @package gplusraffle
  * @copyright Gael Abadin 2014
  * @license MIT Expat
- * @version v0.1.0-beta
+ * @version v0.1.1-beta
  *
  */
 
@@ -190,7 +190,44 @@ function dumpTable(data,containerId,tableId){
             for (propertyName in data['data'].columns){
                 td = document.createElement('td');
                 if (data['data'].rows[index].hasOwnProperty(propertyName)) {
-                    $(td).text(data['data'].rows[index][propertyName]);
+                    if(data['data'].columns[propertyName] === 'raffleid'){
+                        $(td).html(
+                            "<a " +
+                                "href='#' onclick='document.getElementById(\"raffleId\").value=\""+data['data'].rows[index][propertyName]+"\"'>" + 
+                                data['data'].rows[index][propertyName] + 
+                            "</a>"
+                        );
+                    } else if (
+                        data['data'].columns[propertyName] === 'creatorid' ||
+                        data['data'].columns[propertyName] === 'participantid' ||
+                        data['data'].columns[propertyName] === 'winnerid'
+                    ){
+                        $(td).html(
+                            "<a " +
+                                "href='http://plus.google.com/"+data['data'].rows[index][propertyName]+"' target='_blank'" +
+                            ">" +
+                                data['data'].rows[index][propertyName] +
+                            "</a>"
+                        );
+                    } else if(
+                        data['data'].columns[propertyName] === 'created' ||
+                        data['data'].columns[propertyName] === 'joined' ||
+                        data['data'].columns[propertyName] === 'raffled'
+                    ) {
+                        var dateString = data['data'].rows[index][propertyName],
+                            dateParts = dateString.split(' '),
+                            timeParts = dateParts[1].split(':'),
+                            date, dateOffset;
+
+                        dateParts = dateParts[0].split('-');
+
+                        date = new Date(dateParts[0], parseInt(dateParts[1], 10) - 1, dateParts[2], timeParts[0], timeParts[1], timeParts[2]);
+                        dateOffset = new Date(date.getTime()-date.getTimezoneOffset()*60*1000);
+
+                        $(td).text(dateOffset.toString());
+                    } else {
+                        $(td).text(data['data'].rows[index][propertyName]);
+                    }
                 }
                 row.appendChild(td);
             }

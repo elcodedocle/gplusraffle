@@ -4,7 +4,7 @@ gplusraffle by elcodedocle
 
  Copyright (C) 2014 Gael Abadin<br/>
  License: [MIT Expat][1]<br />
- Version: 0.1.0-beta<br />
+ Version: 0.1.1-beta<br />
  [![Build Status](https://travis-ci.org/elcodedocle/gplusraffle.svg?branch=master)](https://travis-ci.org/elcodedocle/gplusraffle)
  
 [![Test site snapshot](http://i.imgur.com/CcQ0cQs.png "http://www.geovolutions.com/gplusraffle/webapp Check it out live!")](http://www.geovolutions.com/gplusraffle/webapp)
@@ -81,7 +81,7 @@ curl -sS https://getcomposer.org/installer | php
  - Install the app from [packagist](https://packagist.org/packages/elcodedocle/gplusraffle) repo:
  
 ```
-php composer.phar require elcodedocle/gplusraffle 0.1.*@beta
+php composer.phar require google/apiclient 1.0.4-beta elcodedocle/gplusraffle 0.1.*@beta
 ```
 
  

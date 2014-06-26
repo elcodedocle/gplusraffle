@@ -6,7 +6,7 @@
  * @package gplusraffle
  * @copyright Gael Abadin 2014
  * @license MIT Expat
- * @version v0.1.0-beta
+ * @version v0.1.1-beta
  * 
  * This class will use AdminDAO to set, store and retrieve the admin's google 
  * account token required for managing the fusion tables where the raffles' 

@@ -10,9 +10,11 @@
  * @package gplusraffle
  * @copyright (c) Gael Abadin 2014
  * @license  MIT Expat
- * @version v0.1.0-beta
+ * @version v0.1.1-beta
  * 
  */
+date_default_timezone_set("GMT");
+
 $startTime = microtime(true);
 $debug = true;
 ob_start();

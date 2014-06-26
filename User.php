@@ -19,7 +19,7 @@
  * based raffle management system
  * @copyright Gael Abadin 2014
  * @license MIT Expat
- * @version v0.1.0-beta
+ * @version v0.1.1-beta
  * 
  * This class handles user authentications.
  * 
