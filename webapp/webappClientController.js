@@ -1,4 +1,4 @@
-/*global $:false, jQuery:false*/
+/*global $:false, jQuery:false, Spinner:false*/
 
 /**
  * gplusraffle - Google API PHP OAuth 2.0 and FusionTables client based raffle
@@ -13,17 +13,10 @@
  *
  */
 
-
-/**
- * Spinner minified code
- */
-(function(t,e){if(typeof exports=="object")module.exports=e();else if(typeof define=="function"&&define.amd)define(e);else t.Spinner=e();})(this,function(){"use strict";var t=["webkit","Moz","ms","O"],e={},i;function o(t,e){var i=document.createElement(t||"div"),o;for(o in e)i[o]=e[o];return i;}function n(t){for(var e=1,i=arguments.length;e<i;e++)t.appendChild(arguments[e]);return t;}var r=function(){var t=o("style",{type:"text/css"});n(document.getElementsByTagName("head")[0],t);return t.sheet||t.styleSheet;}();function s(t,o,n,s){var a=["opacity",o,~~(t*100),n,s].join("-"),f=.01+n/s*100,l=Math.max(1-(1-t)/o*(100-f),t),u=i.substring(0,i.indexOf("Animation")).toLowerCase(),d=u&&"-"+u+"-"||"";if(!e[a]){r.insertRule("@"+d+"keyframes "+a+"{"+"0%{opacity:"+l+"}"+f+"%{opacity:"+t+"}"+(f+.01)+"%{opacity:1}"+(f+o)%100+"%{opacity:"+t+"}"+"100%{opacity:"+l+"}"+"}",r.cssRules.length);e[a]=1;}return a;}function a(e,i){var o=e.style,n,r;i=i.charAt(0).toUpperCase()+i.slice(1);for(r=0;r<t.length;r++){n=t[r]+i;if(o[n]!==undefined)return n;}if(o[i]!==undefined)return i;}function f(t,e){for(var i in e)t.style[a(t,i)||i]=e[i];return t;}function l(t){for(var e=1;e<arguments.length;e++){var i=arguments[e];for(var o in i)if(t[o]===undefined)t[o]=i[o]}return t;}function u(t){var e={x:t.offsetLeft,y:t.offsetTop};while(t=t.offsetParent)e.x+=t.offsetLeft,e.y+=t.offsetTop;return e;}function d(t,e){return typeof t=="string"?t:t[e%t.length];}var p={lines:12,length:7,width:5,radius:10,rotate:0,corners:1,color:"#000",direction:1,speed:1,trail:100,opacity:1/4,fps:20,zIndex:2e9,className:"spinner",top:"auto",left:"auto",position:"relative"};function c(t){if(typeof this=="undefined")return new c(t);this.opts=l(t||{},c.defaults,p);}c.defaults={};l(c.prototype,{spin:function(t){this.stop();var e=this,n=e.opts,r=e.el=f(o(0,{className:n.className}),{position:n.position,width:0,zIndex:n.zIndex}),s=n.radius+n.length+n.width,a,l;if(t){t.insertBefore(r,t.firstChild||null);l=u(t);a=u(r);f(r,{left:(n.left=="auto"?l.x-a.x+(t.offsetWidth>>1):parseInt(n.left,10)+s)+"px",top:(n.top=="auto"?l.y-a.y+(t.offsetHeight>>1):parseInt(n.top,10)+s)+"px"});}r.setAttribute("role","progressbar");e.lines(r,e.opts);if(!i){var d=0,p=(n.lines-1)*(1-n.direction)/2,c,h=n.fps,m=h/n.speed,y=(1-n.opacity)/(m*n.trail/100),g=m/n.lines;(function v(){d++;for(var t=0;t<n.lines;t++){c=Math.max(1-(d+(n.lines-t)*g)%m*y,n.opacity);e.opacity(r,t*n.direction+p,c,n);}e.timeout=e.el&&setTimeout(v,~~(1e3/h));})();}return e;},stop:function(){var t=this.el;if(t){clearTimeout(this.timeout);if(t.parentNode)t.parentNode.removeChild(t);this.el=undefined;}return this;},lines:function(t,e){var r=0,a=(e.lines-1)*(1-e.direction)/2,l;function u(t,i){return f(o(),{position:"absolute",width:e.length+e.width+"px",height:e.width+"px",background:t,boxShadow:i,transformOrigin:"left",transform:"rotate("+~~(360/e.lines*r+e.rotate)+"deg) translate("+e.radius+"px"+",0)",borderRadius:(e.corners*e.width>>1)+"px"});}for(;r<e.lines;r++){l=f(o(),{position:"absolute",top:1+~(e.width/2)+"px",transform:e.hwaccel?"translate3d(0,0,0)":"",opacity:e.opacity,animation:i&&s(e.opacity,e.trail,a+r*e.direction,e.lines)+" "+1/e.speed+"s linear infinite"});if(e.shadow)n(l,f(u("#000","0 0 4px "+"#000"),{top:2+"px"}));n(t,n(l,u(d(e.color,r),"0 0 1px rgba(0,0,0,.1)")));}return t;},opacity:function(t,e,i){if(e<t.childNodes.length)t.childNodes[e].style.opacity=i;}});function h(){function t(t,e){return o("<"+t+' xmlns="urn:schemas-microsoft.com:vml" class="spin-vml">',e);}r.addRule(".spin-vml","behavior:url(#default#VML)");c.prototype.lines=function(e,i){var o=i.length+i.width,r=2*o;function s(){return f(t("group",{coordsize:r+" "+r,coordorigin:-o+" "+-o}),{width:r,height:r});}var a=-(i.width+i.length)*2+"px",l=f(s(),{position:"absolute",top:a,left:a}),u;function p(e,r,a){n(l,n(f(s(),{rotation:360/i.lines*e+"deg",left:~~r}),n(f(t("roundrect",{arcsize:i.corners}),{width:o,height:i.width,left:i.radius,top:-i.width>>1,filter:a}),t("fill",{color:d(i.color,e),opacity:i.opacity}),t("stroke",{opacity:0}))));}if(i.shadow)for(u=1;u<=i.lines;u++)p(u,-2,"progid:DXImageTransform.Microsoft.Blur(pixelradius=2,makeshadow=1,shadowopacity=.3)");for(u=1;u<=i.lines;u++)p(u);return n(e,l);};c.prototype.opacity=function(t,e,i,o){var n=t.firstChild;o=o.shadow&&o.lines||0;if(n&&e+o<n.childNodes.length){n=n.childNodes[e+o];n=n&&n.firstChild;n=n&&n.firstChild;if(n)n.opacity=i}}}var m=f(o("group"),{behavior:"url(#default#VML)"});if(!a(m,"transform")&&m.adj)h();else i=a(m,"animation");return c;});
-
-
 /*
  * Processing dots animation
  */
-/*
+/* (Replaced by spinner animation)
 function processingDots(){
 //dots animation shown while the server processes the request
     "use strict";
@@ -42,7 +35,11 @@ function processingDots(){
 function requestAndProcessPageJSONData(request){
     "use strict";
     var xmlhttp, //intervalID = window.setInterval(processingDots,1000), 
-        opts, target, spinner, propertyName, data, params, response;
+        opts, target, spinner, propertyName, data, params, response, subtitle;
+    if (request.hasOwnProperty('subtitle')){
+        subtitle = request['subtitle'];
+        delete request['subtitle']; // this is bad design.
+    }
     //$("#postAjaxContent").hide();
     //$("#preAjaxContent").show();
     if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
@@ -68,14 +65,58 @@ function requestAndProcessPageJSONData(request){
                 //path=(path===null)?window.location.pathname:path[1];
                 //history.replaceState(stateObj, "", url);
                 //$('#subtitle').text(data['subtitle']);
-                $('#subtitle').text(params['subtitle']);
-                delete params['subtitle'];
             }
+            if (
+                request.collection === 'raffle' && 
+                (
+                    request.action === 'open' ||
+                    request.action === 'close' ||
+                    request.action === 'delete'
+                )
+            ){
+                requestAndProcessPageJSONData(
+                    {
+                        'collection':'raffle',
+                        'action':'list',
+                        'creatorid':'mine',
+                        'subtitle': subtitle
+                    }
+                );
+            } else if (
+                request.collection === 'raffle' &&
+                (
+                    request.action === 'join'
+                )
+            ){
+                requestAndProcessPageJSONData(
+                    {
+                        'collection':'raffle',
+                        'action':'list',
+                        'raffleid':request.raffleid,
+                        'subtitle': subtitle
+                    }
+                );
+            } else if (
+                request.collection === 'raffle' &&
+                (
+                    request.action === 'leave'
+                )
+            ){
+                requestAndProcessPageJSONData(
+                    {
+                        'collection':'raffle',
+                        'action':'list',
+                        'creatorid':'me',
+                        'subtitle': subtitle
+                    }
+                );
+            }
+            $('#subtitle').text(subtitle);
             //$("#preAjaxContent").hide();
             //$("#postAjaxContent").show();
         } else if(xmlhttp.readyState === 4){
             spinner.stop();
-            if(xmlhttp.status === 404){
+            if(xmlhttp.status === 404 && request.collection ==='raffle' && (request.action === 'list' || request.action === 'check')){
                 data = {'data':{'columns':['']}};
             } else {
                 alert(xmlhttp.responseText);
@@ -83,12 +124,14 @@ function requestAndProcessPageJSONData(request){
                     response = JSON.parse(xmlhttp.responseText);
                     data = {'data':{'columns':[],'rows':[[]]}};
                     for (propertyName in response){
-                        data.data.columns.push(
-                            xmlhttp.status === 404?'':propertyName
-                        );
-                        data.data.rows[0].push(
-                            response[propertyName]
-                        );
+                        if (response.hasOwnProperty(propertyName)){
+                            data.data.columns.push(
+                                xmlhttp.status === 404?'':propertyName
+                            );
+                            data.data.rows[0].push(
+                                response[propertyName]
+                            );
+                        }
                     }
                 } catch (err){
                     data = {'data':{'columns':['error'],'rows':[[xmlhttp.status+': '+xmlhttp.responseText]]}}
@@ -189,19 +232,25 @@ function dumpTable(data,containerId,tableId){
             row = document.createElement('tr');
             for (propertyName in data['data'].columns){
                 td = document.createElement('td');
-                if (data['data'].rows[index].hasOwnProperty(propertyName)) {
+                //noinspection JSUnfilteredForInLoop
+                if (typeof data['data'].rows[index][propertyName] !== 'undefined') {
+                    //noinspection JSUnfilteredForInLoop
                     if(data['data'].columns[propertyName] === 'raffleid'){
+                        //noinspection JSUnfilteredForInLoop
                         $(td).html(
                             "<a " +
-                                "href='#' onclick='document.getElementById(\"raffleId\").value=\""+data['data'].rows[index][propertyName]+"\"'>" + 
+                                "href='#' onclick='document.getElementById(\"raffleId\").value=\""+data['data'].rows[index][propertyName]+"\"'>" +
                                 data['data'].rows[index][propertyName] + 
                             "</a>"
                         );
-                    } else if (
+                    } else //noinspection JSUnfilteredForInLoop
+                    if (
+                        //noinspection JSUnfilteredForInLoop
                         data['data'].columns[propertyName] === 'creatorid' ||
                         data['data'].columns[propertyName] === 'participantid' ||
                         data['data'].columns[propertyName] === 'winnerid'
                     ){
+                        //noinspection JSUnfilteredForInLoop
                         $(td).html(
                             "<a " +
                                 "href='http://plus.google.com/"+data['data'].rows[index][propertyName]+"' target='_blank'" +
@@ -209,23 +258,31 @@ function dumpTable(data,containerId,tableId){
                                 data['data'].rows[index][propertyName] +
                             "</a>"
                         );
-                    } else if(
+                    } else //noinspection JSUnfilteredForInLoop
+                        if(
                         data['data'].columns[propertyName] === 'created' ||
+                        //noinspection JSUnfilteredForInLoop
                         data['data'].columns[propertyName] === 'joined' ||
+                        //noinspection JSUnfilteredForInLoop
                         data['data'].columns[propertyName] === 'raffled'
                     ) {
+                        //noinspection JSUnfilteredForInLoop
                         var dateString = data['data'].rows[index][propertyName],
                             dateParts = dateString.split(' '),
                             timeParts = dateParts[1].split(':'),
-                            date, dateOffset;
-
-                        dateParts = dateParts[0].split('-');
-
-                        date = new Date(dateParts[0], parseInt(dateParts[1], 10) - 1, dateParts[2], timeParts[0], timeParts[1], timeParts[2]);
-                        dateOffset = new Date(date.getTime()-date.getTimezoneOffset()*60*1000);
-
-                        $(td).text(dateOffset.toString());
+                            dateDateParts = dateParts[0].split('-'),
+                            date = new Date(dateDateParts[0], parseInt(dateDateParts[1], 10) - 1, dateDateParts[2], timeParts[0], timeParts[1], timeParts[2]),
+                            timeZoneOffsetInMinutes = date.getTimezoneOffset(),
+                            timeZoneOffsetSign = (timeZoneOffsetInMinutes>0)?'-':'+',
+                            timeZoneOffsetHours = Math.floor(Math.abs(timeZoneOffsetInMinutes)/60),
+                            timeZoneOffsetMinutes = Math.abs(timeZoneOffsetInMinutes%60),
+                            timeZoneString = 'GMT'+timeZoneOffsetSign+((timeZoneOffsetHours<10)?'0':'')+timeZoneOffsetHours.toString()+timeZoneOffsetMinutes.toString()+((timeZoneOffsetMinutes<10)?'0':''),
+                            dateOffset = new Date(date.getTime()-timeZoneOffsetInMinutes*60*1000);
+                        
+                        $(td).text(dateOffset.toLocaleString() + ' ' + timeZoneString);
+                        
                     } else {
+                        //noinspection JSUnfilteredForInLoop
                         $(td).text(data['data'].rows[index][propertyName]);
                     }
                 }

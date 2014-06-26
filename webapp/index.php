@@ -61,8 +61,12 @@ $subtitle = array(
             type="text/javascript" 
             src="../components/datatables-tabletools/js/dataTables.tableTools.min.js"
         ></script>
-        <script 
-            type="text/javascript" 
+        <script
+            type="text/javascript"
+            src="lib/spinner.min.js"
+        ></script>
+        <script
+            type="text/javascript"
             src="webappClientController.js"
         ></script>
     </head>
@@ -136,7 +140,7 @@ $subtitle = array(
                                                 'status':'open',
                                                 'subtitle': '<?=$subtitle['list']['open']?>'
                                             }
-                                        )
+                                        );
                                     "
                                     >
                                     <?=htmlentities(_("Open raffles"))?>
@@ -224,7 +228,7 @@ $subtitle = array(
                                                     'collection':'raffle',
                                                     'action':'open',
                                                     'raffleid': document.getElementById('raffleId').value.trim(),
-                                                    'subtitle': '<?=$subtitle['list']['result']?>'
+                                                    'subtitle': '<?=$subtitle['list']['mine']?>'
                                                 }
                                             );
                                         }
@@ -247,7 +251,7 @@ $subtitle = array(
                                                     'collection':'raffle',
                                                     'action':'close',
                                                     'raffleid': document.getElementById('raffleId').value.trim(),
-                                                    'subtitle': '<?=$subtitle['list']['result']?>'
+                                                    'subtitle': '<?=$subtitle['list']['mine']?>'
                                                 }
                                             );
                                         }
@@ -271,7 +275,7 @@ $subtitle = array(
                                                         'collection':'raffle',
                                                         'action':'delete',
                                                         'raffleid': document.getElementById('raffleId').value.trim(),
-                                                        'subtitle': '<?=$subtitle['list']['result']?>'
+                                                        'subtitle': '<?=$subtitle['list']['mine']?>'
                                                     }
                                                 );
                                             }
@@ -320,7 +324,7 @@ $subtitle = array(
                                                 'collection':'raffle',
                                                 'action':'list',
                                                 'raffleid': document.getElementById('raffleId').value.trim(),
-                                                'subtitle': '<?=$subtitle['list']['participants']?>'
+                                                'subtitle': '<?=$subtitle['list']['mine']?>'
                                             }
                                             );
                                         }
@@ -368,7 +372,7 @@ $subtitle = array(
                                                     'collection':'raffle',
                                                     'action':'join',
                                                     'raffleid': document.getElementById('raffleId').value.trim(),
-                                                    'subtitle': '<?=$subtitle['list']['result']?>'
+                                                    'subtitle': '<?=$subtitle['list']['participants']?>'
                                                 }
                                             )
                                         }
