@@ -257,10 +257,10 @@ class RaffleDAO {
      * @param string $tableIdOrName
      * @param null|string $raffleId
      * @param null|string $id
-     * @param null|string $raffled
+     * @param null|string $date
      * @param string $raffleIdOperator
      * @param string $idOperator
-     * @param string $raffledOperator
+     * @param string $dateOperator
      * @param string $raffleIdPostOperator
      * @param string $idPostOperator
      * @param null|Google_Service_Fusiontables $fusionTablesService
@@ -270,10 +270,10 @@ class RaffleDAO {
         $tableIdOrName,
         $raffleId = null,
         $id = null,
-        $raffled = null,
+        $date = null,
         $raffleIdOperator = null,
         $idOperator = null,
-        $raffledOperator = null,
+        $dateOperator = null,
         $raffleIdPostOperator = null,
         $idPostOperator = null,
         $fusionTablesService = null
@@ -284,12 +284,22 @@ class RaffleDAO {
 
         if ($raffleIdOperator === null){ $raffleIdOperator = '='; }
         if ($idOperator === null){ $idOperator = '='; }
-        if ($raffledOperator === null){ $raffledOperator = '='; }
+        if ($dateOperator === null){ $dateOperator = '='; }
         if ($raffleIdPostOperator === null){ $raffleIdPostOperator = 'AND'; }
         if ($idPostOperator === null){ $idPostOperator = 'AND'; }
 
-        if ($tableIdOrName === 'winners') { $tableIdOrName = $this->tableIds['winners']; }
-        if ($tableIdOrName === 'participants') { $tableIdOrName = $this->tableIds['participants']; }
+        $idFieldName = '';
+        $dateFieldName = '';
+        if ($tableIdOrName === 'winners') { 
+            $tableIdOrName = $this->tableIds['winners'];
+            $idFieldName = 'winnerid';
+            $dateFieldName = 'raffled';
+        }
+        if ($tableIdOrName === 'participants') { 
+            $tableIdOrName = $this->tableIds['participants'];
+            $idFieldName = 'participantid';
+            $dateFieldName = 'joined';
+        }
         if ($fusionTablesService===null) {
             $fusionTablesService = $this->fusionTablesService;
         }
@@ -316,13 +326,13 @@ class RaffleDAO {
                 $idPostOperator
             );
             $where .= $preOperator
-                . "winnerid {$idOperator} '{$id}'";
+                . "{$idFieldName} {$idOperator} '{$id}'";
             $preOperator = " {$idPostOperator} ";
         }
-        if (isset ($raffled)) {
-            $raffled = $this->escape_mysql_string($raffled);
-            $raffledOperator = $this->escape_mysql_string($raffledOperator);
-            $where .= $preOperator. "raffled {$raffledOperator} '{$raffled}'";
+        if (isset ($date)) {
+            $date = $this->escape_mysql_string($date);
+            $dateOperator = $this->escape_mysql_string($dateOperator);
+            $where .= $preOperator. "{$dateFieldName} {$dateOperator} '{$date}'";
         }
 
         $result = $fusionTablesService->query->sql($sql.$where);
