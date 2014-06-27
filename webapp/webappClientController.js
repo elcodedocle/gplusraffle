@@ -1,6 +1,6 @@
 /*jshint bitwise: true */
 /*jslint bitwise: true */
-/*global $:false, Spinner:false*/
+/*global $:false, Spinner:false, ActiveXObject:false*/
 
 /**
  * gplusraffle - Google API PHP OAuth 2.0 and FusionTables client based raffle
