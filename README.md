@@ -5,7 +5,8 @@ gplusraffle by elcodedocle
  Copyright (C) 2014 Gael Abadin<br/>
  License: [MIT Expat][1]<br />
  Version: 0.1.1-beta<br />
- [![Build Status](https://travis-ci.org/elcodedocle/gplusraffle.svg?branch=master)](https://travis-ci.org/elcodedocle/gplusraffle)
+ [![Build Status](https://travis-ci.org/elcodedocle/gplusraffle.svg?branch=master)](https://travis-ci.org/elcodedocle/gplusraffle)<br />
+ [![Code Climate](https://codeclimate.com/github/elcodedocle/gplusraffle.png)](https://codeclimate.com/github/elcodedocle/gplusraffle)
  
 [![Test site snapshot](http://i.imgur.com/CcQ0cQs.png "http://www.geovolutions.com/gplusraffle/webapp Check it out live!")](http://www.geovolutions.com/gplusraffle/webapp)
 
