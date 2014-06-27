@@ -10,7 +10,7 @@
  * @package gplusraffle
  * @copyright (c) Gael Abadin 2014
  * @license  MIT Expat
- * @version v0.1.1-beta
+ * @version v0.1.4-beta
  * 
  */
 date_default_timezone_set("GMT");

@@ -4,7 +4,7 @@
 # Copyright (c) Gael Abadin 2014
 # License: MIT Expat
 #
-# Rewrite rules for the REST API v0.1.1-beta
+# Rewrite rules for the REST API v0.1.4-beta
 #
 # This file rewirtes the raffle operations for cleaner urls
 
