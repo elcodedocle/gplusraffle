@@ -1,4 +1,5 @@
-/*global $:false, jQuery:false, Spinner:false*/
+/*jshint bitwise: true */
+/*global $:false, Spinner:false*/
 
 /**
  * gplusraffle - Google API PHP OAuth 2.0 and FusionTables client based raffle
@@ -35,10 +36,10 @@ function processingDots(){
 function requestAndProcessPageJSONData(request){
     "use strict";
     var xmlhttp, //intervalID = window.setInterval(processingDots,1000), 
-        opts, target, spinner, propertyName, data, params, response, subtitle;
+        opts, target, spinner, data, params, response, subtitle;
     if (request.hasOwnProperty('subtitle')){
-        subtitle = request['subtitle'];
-        delete request['subtitle']; // this is bad design.
+        subtitle = request.subtitle;
+        delete request.subtitle; // this is bad design.
     }
     //$("#postAjaxContent").hide();
     //$("#preAjaxContent").show();
@@ -60,7 +61,7 @@ function requestAndProcessPageJSONData(request){
                         if (
                             data.hasOwnProperty('data') &&
                                 typeof data.data === 'object' &&
-                                data['data'].hasOwnProperty('columns')
+                                data.data.hasOwnProperty('columns')
                         ){
                             //generate and dump table on #dataTable div
                             dumpTable(data,'dataTable','theMotherOfAllTables');
@@ -69,7 +70,7 @@ function requestAndProcessPageJSONData(request){
                         }
                         if (data.hasOwnProperty('execTime')){
                             //set output text on some other fields
-                            $('#execTime').text(data['execTime']);
+                            $('#execTime').text(data.execTime);
                         } else {
                             $('#execTime').text('');
                         }
@@ -78,7 +79,7 @@ function requestAndProcessPageJSONData(request){
                 //path = /^([\w\W]*\/)\d+\/\d+\/\d+(\/[\w\W]*)$/.exec(window.location.pathname);
                 //path=(path===null)?window.location.pathname:path[1];
                 //history.replaceState(stateObj, "", url);
-                //$('#subtitle').text(data['subtitle']);
+                //$('#subtitle').text(data.subtitle);
             }
             if (
                 request.collection === 'raffle' && 
@@ -130,14 +131,18 @@ function requestAndProcessPageJSONData(request){
             //$("#postAjaxContent").show();
         } else if(xmlhttp.readyState === 4){
             spinner.stop();
-            if(xmlhttp.status === 404 && request.collection ==='raffle' && (request.action === 'list' || request.action === 'check')){
+            if(
+                xmlhttp.status === 404 && 
+                request.collection ==='raffle' && 
+                (request.action === 'list' || request.action === 'check')
+            ){
                 data = {'data':{'columns':['']}};
             } else {
-                alert(xmlhttp.responseText);
+                window.alert(xmlhttp.responseText);
                 try {
                     response = JSON.parse(xmlhttp.responseText);
                     data = {'data':{'columns':[],'rows':[[]]}};
-                    for (propertyName in response){
+                    for (var propertyName in response){
                         if (response.hasOwnProperty(propertyName)){
                             data.data.columns.push(
                                 xmlhttp.status === 404?'':propertyName
@@ -148,7 +153,7 @@ function requestAndProcessPageJSONData(request){
                         }
                     }
                 } catch (err){
-                    data = {'data':{'columns':['error'],'rows':[[xmlhttp.status+': '+xmlhttp.responseText]]}}
+                    data = {'data':{'columns':['error'],'rows':[[xmlhttp.status+': '+xmlhttp.responseText]]}};
                 }
             }
             dumpTable(data,'dataTable','theMotherOfAllTables');
@@ -160,11 +165,12 @@ function requestAndProcessPageJSONData(request){
     params = '?requestUUIDv4='+'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(
         /[xy]/g, 
         function(c) {
-            var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+            var r = Math.random()*16|0, 
+                v = c === 'x' ? r : (r&0x3|0x8);
             return v.toString(16);
         }
     );
-    for (propertyName in request){
+    for (var propertyName in request){
         if (request.hasOwnProperty(propertyName)) {
             params += '&'+propertyName+'='+request[propertyName];
         }
@@ -232,75 +238,75 @@ function dumpTable(data,containerId,tableId){
     table.setAttribute('id',tableId);
     table.createTHead();
     row = document.createElement('tr');
-    for (propertyName in data['data']['columns']){
-        if (data['data']['columns'].hasOwnProperty(propertyName)) {
+    for (propertyName in data.data.columns){
+        if (data.data.columns.hasOwnProperty(propertyName)) {
             th = document.createElement('th');
-            $(th).text(data['data'].columns[propertyName]);
+            $(th).text(data.data.columns[propertyName]);
             row.appendChild(th);
         }
     }
     table.tHead.appendChild(row);
     tbody = document.createElement('tbody');
-    for (index in data['data'].rows){
-        if (data['data'].rows.hasOwnProperty(index)) {
+    for (index in data.data.rows){
+        if (data.data.rows.hasOwnProperty(index)) {
             row = document.createElement('tr');
-            for (propertyName in data['data'].columns){
-                td = document.createElement('td');
-                //noinspection JSUnfilteredForInLoop
-                if (typeof data['data'].rows[index][propertyName] !== 'undefined') {
+            for (propertyName in data.data.columns){
+                if (data.data.columns.hasOwnProperty(propertyName)){
+                    td = document.createElement('td');
                     //noinspection JSUnfilteredForInLoop
-                    if(data['data'].columns[propertyName] === 'raffleid'){
+                    if (typeof data.data.rows[index][propertyName] !== 'undefined') {
                         //noinspection JSUnfilteredForInLoop
-                        $(td).html(
-                            "<a " +
-                                "href='#' onclick='document.getElementById(\"raffleId\").value=\""+data['data'].rows[index][propertyName]+"\"'>" +
-                                data['data'].rows[index][propertyName] + 
-                            "</a>"
-                        );
-                    } else //noinspection JSUnfilteredForInLoop
-                    if (
-                        //noinspection JSUnfilteredForInLoop
-                        data['data'].columns[propertyName] === 'creatorid' ||
-                        data['data'].columns[propertyName] === 'participantid' ||
-                        data['data'].columns[propertyName] === 'winnerid'
-                    ){
-                        //noinspection JSUnfilteredForInLoop
-                        $(td).html(
-                            "<a " +
-                                "href='http://plus.google.com/"+data['data'].rows[index][propertyName]+"' target='_blank'" +
-                            ">" +
-                                data['data'].rows[index][propertyName] +
-                            "</a>"
-                        );
-                    } else //noinspection JSUnfilteredForInLoop
-                        if(
-                        data['data'].columns[propertyName] === 'created' ||
-                        //noinspection JSUnfilteredForInLoop
-                        data['data'].columns[propertyName] === 'joined' ||
-                        //noinspection JSUnfilteredForInLoop
-                        data['data'].columns[propertyName] === 'raffled'
-                    ) {
-                        //noinspection JSUnfilteredForInLoop
-                        var dateString = data['data'].rows[index][propertyName],
-                            dateParts = dateString.split(' '),
-                            timeParts = dateParts[1].split(':'),
-                            dateDateParts = dateParts[0].split('-'),
-                            date = new Date(dateDateParts[0], parseInt(dateDateParts[1], 10) - 1, dateDateParts[2], timeParts[0], timeParts[1], timeParts[2]),
-                            timeZoneOffsetInMinutes = date.getTimezoneOffset(),
-                            timeZoneOffsetSign = (timeZoneOffsetInMinutes>0)?'-':'+',
-                            timeZoneOffsetHours = Math.floor(Math.abs(timeZoneOffsetInMinutes)/60),
-                            timeZoneOffsetMinutes = Math.abs(timeZoneOffsetInMinutes%60),
-                            timeZoneString = 'GMT'+timeZoneOffsetSign+((timeZoneOffsetHours<10)?'0':'')+timeZoneOffsetHours.toString()+timeZoneOffsetMinutes.toString()+((timeZoneOffsetMinutes<10)?'0':''),
-                            dateOffset = new Date(date.getTime()-timeZoneOffsetInMinutes*60*1000);
-                        
-                        $(td).text(dateOffset.toLocaleString() + ' ' + timeZoneString);
-                        
-                    } else {
-                        //noinspection JSUnfilteredForInLoop
-                        $(td).text(data['data'].rows[index][propertyName]);
+                        if(data.data.columns[propertyName] === 'raffleid'){
+                            //noinspection JSUnfilteredForInLoop
+                            $(td).html(
+                                "<a " +
+                                    "href='#' onclick='document.getElementById(\"raffleId\").value=\""+data.data.rows[index][propertyName]+"\"'>" +
+                                    data.data.rows[index][propertyName] + 
+                                "</a>"
+                            );
+                        } else //noinspection JSUnfilteredForInLoop
+                        if (
+                            //noinspection JSUnfilteredForInLoop
+                            data.data.columns[propertyName] === 'creatorid' ||
+                            data.data.columns[propertyName] === 'participantid' ||
+                            data.data.columns[propertyName] === 'winnerid'
+                        ){
+                            //noinspection JSUnfilteredForInLoop
+                            $(td).html(
+                                "<a " +
+                                    "href='http://plus.google.com/"+data.data.rows[index][propertyName]+"' target='_blank'" +
+                                ">" +
+                                    data.data.rows[index][propertyName] +
+                                "</a>"
+                            );
+                        } else //noinspection JSUnfilteredForInLoop
+                            if(
+                            data.data.columns[propertyName] === 'created' ||
+                            data.data.columns[propertyName] === 'joined' ||
+                            data.data.columns[propertyName] === 'raffled'
+                        ) {
+                            //noinspection JSUnfilteredForInLoop
+                            var dateString = data.data.rows[index][propertyName],
+                                dateParts = dateString.split(' '),
+                                timeParts = dateParts[1].split(':'),
+                                dateDateParts = dateParts[0].split('-'),
+                                date = new Date(dateDateParts[0], parseInt(dateDateParts[1], 10) - 1, dateDateParts[2], timeParts[0], timeParts[1], timeParts[2]),
+                                timeZoneOffsetInMinutes = date.getTimezoneOffset(),
+                                timeZoneOffsetSign = (timeZoneOffsetInMinutes>0)?'-':'+',
+                                timeZoneOffsetHours = Math.floor(Math.abs(timeZoneOffsetInMinutes)/60),
+                                timeZoneOffsetMinutes = Math.abs(timeZoneOffsetInMinutes%60),
+                                timeZoneString = 'GMT'+timeZoneOffsetSign+((timeZoneOffsetHours<10)?'0':'')+timeZoneOffsetHours.toString()+timeZoneOffsetMinutes.toString()+((timeZoneOffsetMinutes<10)?'0':''),
+                                dateOffset = new Date(date.getTime()-timeZoneOffsetInMinutes*60*1000);
+                            
+                            $(td).text(dateOffset.toLocaleString() + ' ' + timeZoneString);
+                            
+                        } else {
+                            //noinspection JSUnfilteredForInLoop
+                            $(td).text(data.data.rows[index][propertyName]);
+                        }
                     }
+                    row.appendChild(td);
                 }
-                row.appendChild(td);
             }
             tbody.appendChild(row);
         }
@@ -373,9 +379,9 @@ $.fn.dataTableExt.oApi.fnPagingInfo = function ( oSettings )
  * TableTools Bootstrap compatibility
  * Required TableTools 2.1+
  */
-if ( $.fn.DataTable['TableTools'] ) {
+if ( $.fn.DataTable.TableTools ) {
     // Set the classes that TableTools uses to something suitable for Bootstrap
-    $.extend( true, $.fn.DataTable['TableTools'].classes, {
+    $.extend( true, $.fn.DataTable.TableTools.classes, {
         "container": "DTTT btn-group",
         "buttons": {
             "normal": "btn",
@@ -397,7 +403,7 @@ if ( $.fn.DataTable['TableTools'] ) {
     } );
 
     // Have the collection use a bootstrap compatible dropdown
-    $.extend( true, $.fn.DataTable['TableTools']['DEFAULTS']['oTags'], {
+    $.extend( true, $.fn.DataTable.TableTools.DEFAULTS.oTags, {
         "collection": {
             "container": "ul",
             "button": "li",

@@ -292,7 +292,7 @@ $subtitle = array(
                                         if (!/^[0-9a-f]{8}\-[0-9a-f]{4}\-[0-9a-f]{4}\-[0-9a-f]{4}\-[0-9a-f]{12}$/.test(
                                         document.getElementById('raffleId').value.trim())
                                         ){
-                                            alert('<?=addslashes(_("You must provide a valid raffle identificator."))?>');
+                                            window.alert('<?=addslashes(_("You must provide a valid raffle identificator."))?>');
                                         } else {
                                             if (window.confirm('<?=_('LEAVE the raffle?')?>')){
                                                 requestAndProcessPageJSONData(
@@ -317,7 +317,7 @@ $subtitle = array(
                                         if (!/^[0-9a-f]{8}\-[0-9a-f]{4}\-[0-9a-f]{4}\-[0-9a-f]{4}\-[0-9a-f]{12}$/.test(
                                             document.getElementById('raffleId').value.trim())
                                         ){
-                                            alert('<?=addslashes(_("You must provide a valid raffle identificator."))?>');
+                                            window.alert('<?=addslashes(_("You must provide a valid raffle identificator."))?>');
                                         } else {
                                             requestAndProcessPageJSONData(
                                             {
@@ -340,7 +340,7 @@ $subtitle = array(
                                         if (!/^[0-9a-f]{8}\-[0-9a-f]{4}\-[0-9a-f]{4}\-[0-9a-f]{4}\-[0-9a-f]{12}$/.test(
                                             document.getElementById('raffleId').value.trim())
                                         ){
-                                            alert('<?=addslashes(_("You must provide a valid raffle identificator."))?>');
+                                            window.alert('<?=addslashes(_("You must provide a valid raffle identificator."))?>');
                                         } else {
                                             requestAndProcessPageJSONData(
                                                 {
@@ -365,7 +365,7 @@ $subtitle = array(
                                         if (!/^[0-9a-f]{8}\-[0-9a-f]{4}\-[0-9a-f]{4}\-[0-9a-f]{4}\-[0-9a-f]{12}$/.test(
                                             document.getElementById('raffleId').value.trim())
                                         ){
-                                            alert('<?=addslashes(_("You must provide a valid raffle identificator."))?>');
+                                            window.alert('<?=addslashes(_("You must provide a valid raffle identificator."))?>');
                                         } else {
                                             requestAndProcessPageJSONData(
                                                 {
@@ -390,7 +390,7 @@ $subtitle = array(
                                         if (!/^[0-9a-f]{8}\-[0-9a-f]{4}\-[0-9a-f]{4}\-[0-9a-f]{4}\-[0-9a-f]{12}$/.test(
                                             document.getElementById('raffleId').value.trim())
                                         ){
-                                            alert('<?=addslashes(_("You must provide a valid raffle identificator."))?>');
+                                            window.alert('<?=addslashes(_("You must provide a valid raffle identificator."))?>');
                                         } else if (
                                             !/^[0-9]+$/.test(
                                                 document.getElementById('limit').value.trim()
@@ -398,7 +398,7 @@ $subtitle = array(
                                             &&
                                             document.getElementById('limit').value.trim()<1
                                         ){
-                                            alert('<?=addslashes(_("You must provide a valid number of desired winners (>0)."))?>');
+                                            window.alert('<?=addslashes(_("You must provide a valid number of desired winners (>0)."))?>');
                                         } else {
                                             requestAndProcessPageJSONData(
                                                 {

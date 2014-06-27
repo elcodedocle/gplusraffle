@@ -279,41 +279,25 @@ class MainController{
                     );
             }
         }
-        if (isset($request['userid'])&&$request['userid']!==''){
-            switch ($request['userid']){
-                case 'me':
-                case $userId:
-                    $filterArray['participantid'] = array(
-                        'condition'=>'=',
-                        'value'=>$userId,
-                    );
-                    break;
-                default:
-                    if ($isAdmin){
-                        $filterArray['participantid'] = array(
-                            'condition'=>'=',
-                            'value'=>$userId,
-                        );
-                    } else {
-                        throw new Exception(
-                            'Access to other users data allowed only to admin',
-                            403
-                        );
-                    }
-            }
+        $accessTestIds = array();
+        if (isset($request['userid'])&&$request['userid']!==''){ 
+            $accessTestIds['participantid'] = $request['userid']; 
         }
         if (isset($request['creatorid'])&&$request['creatorid']!==''){
-            switch ($request['creatorid']){
+            $accessTestIds['creatorid'] = $request['creatorid']; 
+        }
+        foreach($accessTestIds as $fieldName=>$id){
+            switch ($id){
                 case 'me':
                 case $userId:
-                    $filterArray['creatorid'] = array(
+                    $filterArray[$fieldName] = array(
                         'condition'=>'=',
                         'value'=>$userId,
                     );
                     break;
                 default:
                     if ($isAdmin){
-                        $filterArray['creatorid'] = array(
+                        $filterArray[$fieldName] = array(
                             'condition'=>'=',
                             'value'=>$userId,
                         );

@@ -156,10 +156,18 @@ class RaffleDAO {
         
         // I hate Fusion Tables with passion right now... No JOINS on plain SELECT queries? REALLY?
         if (isset ($participantId)){
-            $simpleResultObject = $this->getParticipants(null, $participantId);
+            $simpleResultObject = $this->getFilteredDataFromTable(
+                'participants', 
+                null, 
+                $participantId
+            );
         }
         if (isset ($winnerId)){
-            $simpleResultObject = $this->getWinners(null, $winnerId);
+            $simpleResultObject = $this->getFilteredDataFromTable(
+                'winners', 
+                null, 
+                $winnerId
+            );
         }
         if (isset($simpleResultObject)){
             if (!isset($simpleResultObject->rows)
@@ -240,34 +248,34 @@ class RaffleDAO {
     }
 
     /**
-     * Horrible method to select rows from winners table matching their columns
-     * to combinations of certain criteria
+     * Horrible method to select rows from $tableIdOrName whose columns
+     * match combinations of certain criteria
      *
      * Column matching criteria: is equal to '=', is not equal to '!='
      * Column combinators: 'AND', 'OR'
      *
+     * @param string $tableIdOrName
      * @param null|string $raffleId
-     * @param null|string $winnerId
+     * @param null|string $id
      * @param null|string $raffled
      * @param string $raffleIdOperator
-     * @param string $winnerIdOperator
+     * @param string $idOperator
      * @param string $raffledOperator
      * @param string $raffleIdPostOperator
-     * @param string $winnerIdPostOperator
-     * @param null|string $tableId
+     * @param string $idPostOperator
      * @param null|Google_Service_Fusiontables $fusionTablesService
      * @return stdClass
      */
-    public function getWinners(
+    private function getFilteredDataFromTable(
+        $tableIdOrName,
         $raffleId = null,
-        $winnerId = null,
+        $id = null,
         $raffled = null,
         $raffleIdOperator = null,
-        $winnerIdOperator = null,
+        $idOperator = null,
         $raffledOperator = null,
         $raffleIdPostOperator = null,
-        $winnerIdPostOperator = null,
-        $tableId = null,
+        $idPostOperator = null,
         $fusionTablesService = null
     ){
         // operators should be '=' or '!='
@@ -275,18 +283,19 @@ class RaffleDAO {
         // (checks are not performed here)
 
         if ($raffleIdOperator === null){ $raffleIdOperator = '='; }
-        if ($winnerIdOperator === null){ $winnerIdOperator = '='; }
+        if ($idOperator === null){ $idOperator = '='; }
         if ($raffledOperator === null){ $raffledOperator = '='; }
         if ($raffleIdPostOperator === null){ $raffleIdPostOperator = 'AND'; }
-        if ($winnerIdPostOperator === null){ $winnerIdPostOperator = 'AND'; }
-        
-        if ($tableId === null || $tableId === 'winners') { $tableId = $this->tableIds['winners']; }
+        if ($idPostOperator === null){ $idPostOperator = 'AND'; }
+
+        if ($tableIdOrName === 'winners') { $tableIdOrName = $this->tableIds['winners']; }
+        if ($tableIdOrName === 'participants') { $tableIdOrName = $this->tableIds['participants']; }
         if ($fusionTablesService===null) {
             $fusionTablesService = $this->fusionTablesService;
         }
         // escaping does nothing or makes injection fail
-        $tableId = $this->escape_mysql_string($tableId);
-        $sql = "SELECT * FROM {$tableId}";
+        $tableIdOrName = $this->escape_mysql_string($tableIdOrName);
+        $sql = "SELECT * FROM {$tableIdOrName}";
         $preOperator = '';
         $where = " WHERE ";
         if (isset ($raffleId)) {
@@ -298,106 +307,22 @@ class RaffleDAO {
             $where .= "raffleid {$raffleIdOperator} '{$raffleId}'";
             $preOperator = " {$raffleIdPostOperator} ";
         }
-        if (isset ($winnerId)) {
-            $winnerId = $this->escape_mysql_string($winnerId);
-            $winnerIdOperator = $this->escape_mysql_string(
-                $winnerIdOperator
+        if (isset ($id)) {
+            $id = $this->escape_mysql_string($id);
+            $idOperator = $this->escape_mysql_string(
+                $idOperator
             );
-            $winnerIdPostOperator = $this->escape_mysql_string(
-                $winnerIdPostOperator
+            $idPostOperator = $this->escape_mysql_string(
+                $idPostOperator
             );
             $where .= $preOperator
-                . "winnerid {$winnerIdOperator} '{$winnerId}'";
-            $preOperator = " {$winnerIdPostOperator} ";
+                . "winnerid {$idOperator} '{$id}'";
+            $preOperator = " {$idPostOperator} ";
         }
         if (isset ($raffled)) {
             $raffled = $this->escape_mysql_string($raffled);
             $raffledOperator = $this->escape_mysql_string($raffledOperator);
             $where .= $preOperator. "raffled {$raffledOperator} '{$raffled}'";
-        }
-
-        $result = $fusionTablesService->query->sql($sql.$where);
-
-        return $result->toSimpleObject();
-    }
-
-    /**
-     * Horrible method to select rows from participants table matching their 
-     * columns to combinations of certain criteria
-     * 
-     * It is a clone of getWinners, duplicated for decoupling.
-     *
-     * Column matching criteria: is equal to '=', is not equal to '!='
-     * Column combinators: 'AND', 'OR'
-     *
-     * @param null|string $raffleId
-     * @param null|string $participantId
-     * @param null|string $joined
-     * @param string $raffleIdOperator
-     * @param string $participantIdOperator
-     * @param string $joinedOperator
-     * @param string $raffleIdPostOperator
-     * @param string $participantIdPostOperator
-     * @param null|string $tableId
-     * @param null|Google_Service_Fusiontables $fusionTablesService
-     * @return stdClass
-     */
-    public function getParticipants(
-        $raffleId = null,
-        $participantId = null,
-        $joined = null,
-        $raffleIdOperator = null,
-        $participantIdOperator = null,
-        $joinedOperator = null,
-        $raffleIdPostOperator = null,
-        $participantIdPostOperator = null,
-        $tableId = null,
-        $fusionTablesService = null
-    ){
-        // operators should be '=' or '!=' or 'IN'
-        // post operators should be 'AND' (Fusion Tables does not support 'OR')
-        // (checks are not performed here)
-
-        if ($raffleIdOperator === null){ $raffleIdOperator = '='; }
-        if ($participantIdOperator === null){ $participantIdOperator = '='; }
-        if ($joinedOperator === null){ $joinedOperator = '='; }
-        if ($raffleIdPostOperator === null){ $raffleIdPostOperator = 'AND'; }
-        if ($participantIdPostOperator === null){ $participantIdPostOperator = 'AND'; }
-        
-        if ($tableId === null || $tableId === 'participants') { $tableId = $this->tableIds['participants']; }
-        if ($fusionTablesService===null) {
-            $fusionTablesService = $this->fusionTablesService;
-        }
-        // escaping does nothing or makes injection fail
-        $tableId = $this->escape_mysql_string($tableId);
-        $sql = "SELECT * FROM {$tableId}";
-        $preOperator = '';
-        $where = " WHERE ";
-        if (isset ($raffleId)) {
-            $raffleId = $this->escape_mysql_string($raffleId);
-            $raffleIdOperator =  $this->escape_mysql_string($raffleIdOperator);
-            $raffleIdPostOperator =  $this->escape_mysql_string(
-                $raffleIdPostOperator
-            );
-            $where .= "raffleid {$raffleIdOperator} '{$raffleId}'";
-            $preOperator = " {$raffleIdPostOperator} ";
-        }
-        if (isset ($participantId)) {
-            $participantId = $this->escape_mysql_string($participantId);
-            $participantIdOperator = $this->escape_mysql_string(
-                $participantIdOperator
-            );
-            $participantIdPostOperator = $this->escape_mysql_string(
-                $participantIdPostOperator
-            );
-            $where .= $preOperator
-                . "participantid {$participantIdOperator} '{$participantId}'";
-            $preOperator = " {$participantIdPostOperator} ";
-        }
-        if (isset ($joined)) {
-            $joined = $this->escape_mysql_string($joined);
-            $joinedOperator = $this->escape_mysql_string($joinedOperator);
-            $where .= $preOperator. "joined {$joinedOperator} '{$joined}'";
         }
 
         $result = $fusionTablesService->query->sql($sql.$where);
