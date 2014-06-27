@@ -1,4 +1,5 @@
 /*jshint bitwise: true */
+/*jslint bitwise: true */
 /*global $:false, Spinner:false*/
 
 /**
