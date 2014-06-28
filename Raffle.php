@@ -271,20 +271,8 @@ class Raffle{
             isset($filterArray['creatorid'])?$filterArray['creatorid']['value']:null,
             isset($filterArray['participantid'])?$filterArray['participantid']['value']:null,
             isset($filterArray['winnerid'])?$filterArray['winnerid']['value']:null,
-            isset($filterArray['created'])?$filterArray['created']['value']:null,
             isset($filterArray['privacy'])?$filterArray['privacy']['value']:null,
-            isset($filterArray['status'])?$filterArray['status']['value']:null,
-            isset($filterArray['raffleid'])?$filterArray['raffleid']['condition']:null,
-            isset($filterArray['description'])?$filterArray['description']['condition']:null,
-            isset($filterArray['creatorid'])?$filterArray['creatorid']['condition']:null,
-            isset($filterArray['created'])?$filterArray['created']['condition']:null,
-            isset($filterArray['privacy'])?$filterArray['privacy']['condition']:null,
-            isset($filterArray['status'])?$filterArray['status']['condition']:null,
-            $raffleIdPostOperator = 'AND',
-            $descriptionPostOperator = 'AND',
-            $creatorIdPostOperator = 'AND',
-            $createdPostOperator = 'AND',
-            $privacyPostOperator = 'AND'
+            isset($filterArray['status'])?$filterArray['status']['value']:null
         );
     }
 

@@ -249,26 +249,22 @@ class MainController{
         
         $filterArray = array();
         $filterArray['privacy'] = array(
-            'condition'=>'=',
             'value'=>'public',
         );
         if (isset($request['status'])&&$request['status']!==''){
             switch ($request['status']){
                 case 'open':
                     $filterArray ['status'] = array(
-                        'condition'=>'=',
                         'value'=>'open',
                     );
                     break;
                 case 'closed':
                     $filterArray['status'] = array(
-                        'condition'=>'=',
                         'value'=>'closed',
                     );
                     break;
                 case 'raffled':
                     $filterArray['status'] = array(
-                        'condition'=>'=',
                         'value'=>'raffled',
                     );
                     break;
@@ -291,14 +287,12 @@ class MainController{
                 case 'me':
                 case $userId:
                     $filterArray[$fieldName] = array(
-                        'condition'=>'=',
                         'value'=>$userId,
                     );
                     break;
                 default:
                     if ($isAdmin){
                         $filterArray[$fieldName] = array(
-                            'condition'=>'=',
                             'value'=>$userId,
                         );
                     } else {
@@ -311,7 +305,6 @@ class MainController{
         }
         if (isset($request['raffleid'])&&$request['raffleid']!==''){
             $filterArray ['raffleid'] = array(
-                'condition'=>'=',
                 'value'=>$request['raffleid'],
             );
         }

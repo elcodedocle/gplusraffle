@@ -71,31 +71,16 @@ class RaffleDAO {
      * Horrible method to select rows from raffles table matching their columns
      * to combinations of certain criteria
      *
-     * Column matching criteria: is equal to '=', is not equal to '!='
-     * Column combinators: 'AND', 'OR'
+     * Column matching criteria: is equal to ('=')
+     * Column combinators: 'AND'
      *
      * @param null|string $raffleId
      * @param null|string $description
      * @param null|string $creatorId
-     * @param null $participantId
-     * @param null $winnerId
-     * @param null|string $created
+     * @param null|string $participantId
+     * @param null|string $winnerId
      * @param null|string $privacy
      * @param null|string $status
-     * @param string $raffleIdOperator
-     * @param string $descriptionOperator
-     * @param string $creatorIdOperator
-     * @param string $createdOperator
-     * @param string $privacyOperator
-     * @param string $statusOperator
-     * @param string $raffleIdPostOperator
-     * @param string $descriptionPostOperator
-     * @param string $creatorIdPostOperator
-     * @param string $createdPostOperator
-     * @param string $privacyPostOperator
-     * @param null|string $tableId
-     * @param null|Google_Service_Fusiontables $fusionTablesService
-     * @param null $debug
      * @throws Exception
      * @return stdClass a simple object containing numerically indexed column
      * names array in 'columns' property and numerically indexed rows array
@@ -107,50 +92,15 @@ class RaffleDAO {
         $creatorId = null,
         $participantId = null,
         $winnerId = null,
-        $created = null,
         $privacy = null,
-        $status = null,
-        $raffleIdOperator = null,
-        $descriptionOperator = null,
-        $creatorIdOperator = null,
-        $createdOperator = null,
-        $privacyOperator = null,
-        $statusOperator = null,
-        $raffleIdPostOperator = null,
-        $descriptionPostOperator = null,
-        $creatorIdPostOperator = null,
-        $createdPostOperator = null,
-        $privacyPostOperator = null,
-        $tableId = null,
-        $fusionTablesService = null,
-        $debug = null
+        $status = null
     ){
-        // operators should be '=' or '!='
-        // post operators should be 'AND' (Fusion Tables does not support 'OR')
-        // (checks are not performed here)
-
-        if ($raffleIdOperator === null){ $raffleIdOperator = '='; }
-        if ($descriptionOperator === null){ $descriptionOperator = '='; }
-        if ($creatorIdOperator === null){ $creatorIdOperator = '='; }
-        if ($createdOperator === null){ $createdOperator = '='; }
-        if ($privacyOperator === null){ $privacyOperator = '='; }
-        if ($statusOperator === null){ $statusOperator = '='; }
-        if ($raffleIdPostOperator === null){ $raffleIdPostOperator = 'AND'; }
-        if ($descriptionPostOperator === null){ $descriptionPostOperator = 'AND'; }
-        if ($creatorIdPostOperator === null){ $creatorIdPostOperator = 'AND'; }
-        if ($createdPostOperator === null){ $createdPostOperator = 'AND'; }
-        if ($privacyPostOperator === null){ $privacyPostOperator = 'AND'; }
+        $tableId = $this->tableIds['raffles'];
         
-        if ($debug === null) { $debug = $this->debug; }
+        $fusionTablesService = $this->fusionTablesService;
         
-        if ($tableId === null || $tableId === 'raffles') { $tableId = $this->tableIds['raffles']; }
-        
-        if ($fusionTablesService===null) {
-            $fusionTablesService = $this->fusionTablesService;
-        }
-        // escaping does nothing or makes injection fail
-        $tableId = $this->escape_mysql_string($tableId);
         $sql = "SELECT * FROM {$tableId}";
+        $raffleIdOperator = '=';
         $preOperator = '';
         $where = " WHERE ";
         
@@ -189,59 +139,31 @@ class RaffleDAO {
         // Now you do too, I hope.
         
         if (isset ($raffleId)) {
-            $raffleIdOperator =  $this->escape_mysql_string($raffleIdOperator);
-            $raffleIdPostOperator =  $this->escape_mysql_string(
-                $raffleIdPostOperator
-            );
             $where .= "raffleid {$raffleIdOperator} {$raffleId}";
-            $preOperator = " {$raffleIdPostOperator} ";
+            $preOperator = " AND ";
         }
         if (isset ($description)) {
             $description = $this->escape_mysql_string($description);
-            $descriptionOperator = $this->escape_mysql_string(
-                $descriptionOperator
-            );
-            $descriptionPostOperator = $this->escape_mysql_string(
-                $descriptionPostOperator
-            );
             $where .= $preOperator
-                . "raffledescription {$descriptionOperator} '{$description}'";
-            $preOperator = " {$descriptionPostOperator} "; 
+                . "raffledescription = '{$description}'";
+            $preOperator = " AND "; 
         }
         if (isset ($creatorId)) {
             $creatorId = $this->escape_mysql_string($creatorId);
-            $creatorIdOperator = $this->escape_mysql_string($creatorIdOperator);
             $where .= $preOperator
-                . "creatorid {$creatorIdOperator} '{$creatorId}'";
-            $preOperator = " {$creatorIdPostOperator} "; 
-        }
-        if (isset ($created)) {
-            $created = $this->escape_mysql_string($created);
-            $createdOperator = $this->escape_mysql_string($createdOperator);
-            $createdPostOperator = $this->escape_mysql_string(
-                $createdPostOperator
-            );
-            $where .= $preOperator. "created {$createdOperator} '{$created}'";
-            $preOperator = " {$createdPostOperator} "; 
+                . "creatorid = '{$creatorId}'";
+            $preOperator = " AND "; 
         }
         if (isset ($privacy)) {
             $privacy = $this->escape_mysql_string($privacy);
-            $privacyOperator = $this->escape_mysql_string($privacyOperator);
-            $privacyPostOperator = $this->escape_mysql_string(
-                $privacyPostOperator
-            );
-            $where .= $preOperator. "privacy {$privacyOperator} '{$privacy}'";
-            $preOperator = " {$privacyPostOperator} "; 
+            $where .= $preOperator. "privacy = '{$privacy}'";
+            $preOperator = " AND "; 
         }
         if (isset ($status)) {
             $status = $this->escape_mysql_string($status);
-            $statusOperator = $this->escape_mysql_string($statusOperator);
-            $where .= $preOperator. "status {$statusOperator} '{$status}'";
+            $where .= $preOperator. "status = '{$status}'";
         }
-
-        if ($debug){
-            error_log($sql.$where);
-        }
+        
         $result = $fusionTablesService->query->sql($sql.$where);
 
         return $result->toSimpleObject();
@@ -251,58 +173,32 @@ class RaffleDAO {
      * Horrible method to select rows from $tableIdOrName whose columns
      * match combinations of certain criteria
      *
-     * Column matching criteria: is equal to '=', is not equal to '!='
-     * Column combinators: 'AND', 'OR'
+     * Column matching criteria: is equal to ('=')
+     * Column combinators: 'AND'
      *
      * @param string $tableIdOrName
      * @param null|string $raffleId
      * @param null|string $id
-     * @param null|string $date
-     * @param string $raffleIdOperator
-     * @param string $idOperator
-     * @param string $dateOperator
-     * @param string $raffleIdPostOperator
-     * @param string $idPostOperator
-     * @param null|Google_Service_Fusiontables $fusionTablesService
      * @return stdClass
      */
     private function getFilteredDataFromTable(
         $tableIdOrName,
         $raffleId = null,
-        $id = null,
-        $date = null,
-        $raffleIdOperator = null,
-        $idOperator = null,
-        $dateOperator = null,
-        $raffleIdPostOperator = null,
-        $idPostOperator = null,
-        $fusionTablesService = null
+        $id = null
     ){
-        // operators should be '=' or '!='
-        // post operators should be 'AND' (Fusion Tables does not support 'OR')
-        // (checks are not performed here)
-
-        if ($raffleIdOperator === null){ $raffleIdOperator = '='; }
-        if ($idOperator === null){ $idOperator = '='; }
-        if ($dateOperator === null){ $dateOperator = '='; }
-        if ($raffleIdPostOperator === null){ $raffleIdPostOperator = 'AND'; }
-        if ($idPostOperator === null){ $idPostOperator = 'AND'; }
-
         $idFieldName = '';
-        $dateFieldName = '';
+        //$dateFieldName = '';
         if ($tableIdOrName === 'winners') { 
             $tableIdOrName = $this->tableIds['winners'];
             $idFieldName = 'winnerid';
-            $dateFieldName = 'raffled';
+            //$dateFieldName = 'raffled';
         }
         if ($tableIdOrName === 'participants') { 
             $tableIdOrName = $this->tableIds['participants'];
             $idFieldName = 'participantid';
-            $dateFieldName = 'joined';
+            //$dateFieldName = 'joined';
         }
-        if ($fusionTablesService===null) {
-            $fusionTablesService = $this->fusionTablesService;
-        }
+        $fusionTablesService = $this->fusionTablesService;
         // escaping does nothing or makes injection fail
         $tableIdOrName = $this->escape_mysql_string($tableIdOrName);
         $sql = "SELECT * FROM {$tableIdOrName}";
@@ -310,30 +206,21 @@ class RaffleDAO {
         $where = " WHERE ";
         if (isset ($raffleId)) {
             $raffleId = $this->escape_mysql_string($raffleId);
-            $raffleIdOperator =  $this->escape_mysql_string($raffleIdOperator);
-            $raffleIdPostOperator =  $this->escape_mysql_string(
-                $raffleIdPostOperator
-            );
-            $where .= "raffleid {$raffleIdOperator} '{$raffleId}'";
-            $preOperator = " {$raffleIdPostOperator} ";
+            $where .= "raffleid = '{$raffleId}'";
+            $preOperator = " AND ";
         }
         if (isset ($id)) {
             $id = $this->escape_mysql_string($id);
-            $idOperator = $this->escape_mysql_string(
-                $idOperator
-            );
-            $idPostOperator = $this->escape_mysql_string(
-                $idPostOperator
-            );
             $where .= $preOperator
-                . "{$idFieldName} {$idOperator} '{$id}'";
-            $preOperator = " {$idPostOperator} ";
+                . "{$idFieldName} = '{$id}'";
+            //$preOperator = " AND ";
         }
+        /*
         if (isset ($date)) {
             $date = $this->escape_mysql_string($date);
-            $dateOperator = $this->escape_mysql_string($dateOperator);
-            $where .= $preOperator. "{$dateFieldName} {$dateOperator} '{$date}'";
+            $where .= $preOperator. "{$dateFieldName} = '{$date}'";
         }
+        */
 
         $result = $fusionTablesService->query->sql($sql.$where);
 
