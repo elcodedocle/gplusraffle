@@ -257,53 +257,69 @@ function dumpTable(data,containerId,tableId){
                     //noinspection JSUnfilteredForInLoop
                     if (typeof data.data.rows[index][propertyName] !== 'undefined') {
                         //noinspection JSUnfilteredForInLoop
-                        if(data.data.columns[propertyName] === 'raffleid'){
-                            //noinspection JSUnfilteredForInLoop
-                            $(td).html(
-                                "<a " +
-                                    "href='#' onclick='document.getElementById(\"raffleId\").value=\""+data.data.rows[index][propertyName]+"\"'>" +
-                                    data.data.rows[index][propertyName] + 
-                                "</a>"
-                            );
-                        } else //noinspection JSUnfilteredForInLoop
-                        if (
-                            //noinspection JSUnfilteredForInLoop
-                            data.data.columns[propertyName] === 'creatorid' ||
-                            data.data.columns[propertyName] === 'participantid' ||
-                            data.data.columns[propertyName] === 'winnerid'
-                        ){
-                            //noinspection JSUnfilteredForInLoop
-                            $(td).html(
-                                "<a " +
-                                    "href='http://plus.google.com/"+data.data.rows[index][propertyName]+"' target='_blank'" +
-                                ">" +
-                                    data.data.rows[index][propertyName] +
-                                "</a>"
-                            );
-                        } else //noinspection JSUnfilteredForInLoop
-                            if(
-                            data.data.columns[propertyName] === 'created' ||
-                            data.data.columns[propertyName] === 'joined' ||
-                            data.data.columns[propertyName] === 'raffled'
-                        ) {
-                            //noinspection JSUnfilteredForInLoop
-                            var dateString = data.data.rows[index][propertyName],
-                                dateParts = dateString.split(' '),
-                                timeParts = dateParts[1].split(':'),
-                                dateDateParts = dateParts[0].split('-'),
-                                date = new Date(dateDateParts[0], parseInt(dateDateParts[1], 10) - 1, dateDateParts[2], timeParts[0], timeParts[1], timeParts[2]),
-                                timeZoneOffsetInMinutes = date.getTimezoneOffset(),
-                                timeZoneOffsetSign = (timeZoneOffsetInMinutes>0)?'-':'+',
-                                timeZoneOffsetHours = Math.floor(Math.abs(timeZoneOffsetInMinutes)/60),
-                                timeZoneOffsetMinutes = Math.abs(timeZoneOffsetInMinutes%60),
-                                timeZoneString = 'GMT'+timeZoneOffsetSign+((timeZoneOffsetHours<10)?'0':'')+timeZoneOffsetHours.toString()+timeZoneOffsetMinutes.toString()+((timeZoneOffsetMinutes<10)?'0':''),
-                                dateOffset = new Date(date.getTime()-timeZoneOffsetInMinutes*60*1000);
+                        switch (data.data.columns[propertyName]){
+                            case 'raffleid':
+                                //noinspection JSUnfilteredForInLoop
+                                $(td).html(
+                                    "<a " +
+                                        "href='#' onclick='document.getElementById(\"raffleId\").value=\"" + 
+                                        data.data.rows[index][propertyName] + 
+                                        "\"'>" +
+                                        data.data.rows[index][propertyName] + 
+                                    "</a>"
+                                );
+                                break;
+                            case 'creatorid':
+                            case 'participantid':
+                            case 'winnerid':
+                                //noinspection JSUnfilteredForInLoop
+                                $(td).html(
+                                    "<a " +
+                                        "href='http://plus.google.com/"+data.data.rows[index][propertyName]+"' target='_blank'" +
+                                    ">" +
+                                        data.data.rows[index][propertyName] +
+                                    "</a>"
+                                );
+                                break;
+                            case 'created':
+                            case 'joined':
+                            case 'raffled':
+                                //noinspection JSUnfilteredForInLoop
+                                var dateString = data.data.rows[index][propertyName],
+                                    dateParts = dateString.split(' '),
+                                    timeParts = dateParts[1].split(':'),
+                                    dateDateParts = dateParts[0].split('-'),
+                                    date = new Date(
+                                        dateDateParts[0], 
+                                        parseInt(
+                                            dateDateParts[1], 
+                                            10
+                                        ) - 1, 
+                                        dateDateParts[2], 
+                                        timeParts[0], 
+                                        timeParts[1], 
+                                        timeParts[2]
+                                    ),
+                                    timeZoneOffsetInMinutes = date.getTimezoneOffset(),
+                                    timeZoneOffsetSign = (timeZoneOffsetInMinutes>0)?'-':'+',
+                                    timeZoneOffsetHours = Math.floor(Math.abs(timeZoneOffsetInMinutes)/60),
+                                    timeZoneOffsetMinutes = Math.abs(timeZoneOffsetInMinutes%60),
+                                    timeZoneString = 'GMT' + 
+                                        timeZoneOffsetSign + (
+                                            (timeZoneOffsetHours<10)?'0':''
+                                        ) + 
+                                        timeZoneOffsetHours.toString() + 
+                                        timeZoneOffsetMinutes.toString() + (
+                                            (timeZoneOffsetMinutes<10)?'0':''
+                                    ),
+                                    dateOffset = new Date(date.getTime()-timeZoneOffsetInMinutes*60*1000);
+                                
+                                $(td).text(dateOffset.toLocaleString() + ' ' + timeZoneString);
                             
-                            $(td).text(dateOffset.toLocaleString() + ' ' + timeZoneString);
-                            
-                        } else {
-                            //noinspection JSUnfilteredForInLoop
-                            $(td).text(data.data.rows[index][propertyName]);
+                                break;
+                            default:
+                                //noinspection JSUnfilteredForInLoop
+                                $(td).text(data.data.rows[index][propertyName]);
                         }
                     }
                     row.appendChild(td);
