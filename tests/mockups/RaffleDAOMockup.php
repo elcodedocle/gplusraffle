@@ -36,53 +36,11 @@ class RaffleDAOMockup {
         $creatorId = null,
         $participantId = null,
         $winnerId = null,
-        $created = null,
         $privacy = null,
-        $status = null,
-        $raffleIdOperator = null,
-        $descriptionOperator = null,
-        $creatorIdOperator = null,
-        $createdOperator = null,
-        $privacyOperator = null,
-        $statusOperator = null,
-        $raffleIdPostOperator = null,
-        $descriptionPostOperator = null,
-        $creatorIdPostOperator = null,
-        $createdPostOperator = null,
-        $privacyPostOperator = null,
-        $tableId = null,
-        $fusionTablesService = null,
-        $debug = null
+        $status = null
     ){
-        if ($raffleIdOperator === null){ $raffleIdOperator = '='; }
-        if ($descriptionOperator === null){ $descriptionOperator = '='; }
-        if ($creatorIdOperator === null){ $creatorIdOperator = '='; }
-        if ($createdOperator === null){ $createdOperator = '='; }
-        if ($privacyOperator === null){ $privacyOperator = '='; }
-        if ($statusOperator === null){ $statusOperator = '='; }
-        if ($raffleIdPostOperator === null){ 
-            //$raffleIdPostOperator = 'AND'; 
-        }
-        if ($descriptionPostOperator === null){ 
-            //$descriptionPostOperator = 'AND'; 
-        }
-        if ($creatorIdPostOperator === null){ 
-            //$creatorIdPostOperator = 'AND'; 
-        }
-        if ($createdPostOperator === null){ 
-            //$createdPostOperator = 'AND'; 
-        }
-        if ($privacyPostOperator === null){ 
-            //$privacyPostOperator = 'AND'; 
-        }
 
-        if ($debug === null) { $debug = $this->debug; }
-
-        if ($tableId === null || $tableId === 'raffles') { $tableId = $this->tableIds['raffles']; }
-
-        if ($fusionTablesService===null) {
-            //$fusionTablesService = $this->fusionTablesService;
-        }
+        $tableId = $this->tableIds['raffles'];
 
         $raffles = $this->tablesMockup[$tableId];
         $participants = $this->tablesMockup['mockupParticipantsId'];
@@ -134,12 +92,7 @@ class RaffleDAOMockup {
             foreach ($rafflesRows as $row){
                 if (
                     (
-                        $raffleIdOperator === '=' &&
                         $row[$raffleIdIndex] === $raffleId
-                    ) ||
-                    (
-                        $raffleIdOperator !== '=' &&
-                        $row[$raffleIdIndex] !== $raffleId
                     )
                 ){
                     $filteredRows[]=$row;
@@ -153,12 +106,7 @@ class RaffleDAOMockup {
             foreach ($rafflesRows as $row){
                 if (
                     (
-                        $descriptionOperator === '=' &&
                         $row[$descriptionIndex] === $description
-                    ) ||
-                    (
-                        $descriptionOperator !== '=' &&
-                        $row[$descriptionIndex] !== $description
                     )
                 ){
                     $filteredRows[]=$row;
@@ -172,31 +120,7 @@ class RaffleDAOMockup {
             foreach ($rafflesRows as $row){
                 if (
                     (
-                        $creatorIdOperator === '=' &&
                         $row[$creatorIdIndex] === $creatorId
-                    ) ||
-                    (
-                        $creatorIdOperator !== '=' &&
-                        $row[$creatorIdIndex] !== $creatorId
-                    )
-                ){
-                    $filteredRows[]=$row;
-                }
-            }
-            $rafflesRows = $filteredRows;
-        }
-        if (isset ($created)) {
-            $createdIndex = array_search('created',$raffles->columns);
-            $filteredRows = array();
-            foreach ($rafflesRows as $row){
-                if (
-                    (
-                        $createdOperator === '=' &&
-                        $row[$createdIndex] === $created
-                    ) ||
-                    (
-                        $createdOperator !== '=' &&
-                        $row[$createdIndex] !== $created
                     )
                 ){
                     $filteredRows[]=$row;
@@ -210,12 +134,7 @@ class RaffleDAOMockup {
             foreach ($rafflesRows as $row){
                 if (
                     (
-                        $privacyOperator === '=' &&
                         $row[$privacyIndex] === $privacy
-                    ) ||
-                    (
-                        $privacyOperator !== '=' &&
-                        $row[$privacyIndex] !== $privacy
                     )
                 ){
                     $filteredRows[]=$row;
@@ -229,12 +148,7 @@ class RaffleDAOMockup {
             foreach ($rafflesRows as $row){
                 if (
                     (
-                        $statusOperator === '=' &&
                         $row[$statusIndex] === $status
-                    ) ||
-                    (
-                        $statusOperator !== '=' &&
-                        $row[$statusIndex] !== $status
                     )
                 ){
                     $filteredRows[]=$row;
@@ -242,210 +156,66 @@ class RaffleDAOMockup {
             }
             $rafflesRows = $filteredRows;
         }
-
-        if ($debug){
-            error_log(var_export($rafflesRows,true).PHP_EOL);
-        }
         
         $filteredRaffles->rows = $rafflesRows;
 
         return $filteredRaffles;
     }
     
-    public function getWinners(
+    public function getFilteredDataFromTable(
+        $tableIdOrName,
         $raffleId = null,
-        $winnerId = null,
-        $raffled = null,
-        $raffleIdOperator = null,
-        $winnerIdOperator = null,
-        $raffledOperator = null,
-        $raffleIdPostOperator = null,
-        $winnerIdPostOperator = null,
-        $tableId = null,
-        $fusionTablesService = null
+        $id = null
     ){
-        if ($raffleIdOperator === null){ $raffleIdOperator = '='; }
-        if ($winnerIdOperator === null){ $winnerIdOperator = '='; }
-        if ($raffledOperator === null){ $raffledOperator = '='; }
-        if ($raffleIdPostOperator === null){ 
-            //$raffleIdPostOperator = 'AND'; 
-        }
-        if ($winnerIdPostOperator === null){ 
-            //$winnerIdPostOperator = 'AND'; 
-        }
 
-        if ($tableId === null || $tableId === 'winners') { $tableId = $this->tableIds['winners']; }
-        if ($fusionTablesService===null) {
-            //$fusionTablesService = $this->fusionTablesService;
-        }
-        
-        $winners = $this->tablesMockup[$tableId];
+        $idFieldName = '';
+        if ($tableIdOrName === 'winners') {
+            $this->tableIds['winners'];
+            $idFieldName = 'winnerid';
+        } else if ($tableIdOrName === 'participants') {
+            $this->tableIds['participants'];
+            $idFieldName = 'participantid';
+         }
 
-        $filteredWinners = new stdClass();
-        $filteredWinners->columns = $winners->columns;
+        $table = $this->tablesMockup[$tableIdOrName];
 
-        $winnersRows = $winners->rows;
+        $filteredWinnersOrParticipants = new stdClass();
+        $filteredWinnersOrParticipants->columns = $table->columns;
+
+        $winnersOrParticipantsRows = $table->rows;
         
         if (isset ($raffleId)) {
-            $raffleIdIndex = array_search('raffleid',$winners->columns);
+            $raffleIdIndex = array_search($idFieldName,$table->columns);
             $filteredRows = array();
-            foreach ($winnersRows as $row){
+            foreach ($winnersOrParticipantsRows as $row){
                 if (
                     (
-                        $raffleIdOperator === '=' &&
                         $row[$raffleIdIndex] === $raffleId
-                    ) ||
-                    (
-                        $raffleIdOperator !== '=' &&
-                        $row[$raffleIdIndex] !== $raffleId
                     )
                 ){
                     $filteredRows[]=$row;
                 }
             }
-            $winnersRows = $filteredRows;
+            $winnersOrParticipantsRows = $filteredRows;
         }
-        if (isset ($winnerId)) {
-            $winnerIdIndex = array_search('winnerid',$winners->columns);
+        if (isset ($id)) {
+            $winnerOrParticipantIdIndex = array_search($idFieldName,$table->columns);
             $filteredRows = array();
-            foreach ($winnersRows as $row){
+            foreach ($winnersOrParticipantsRows as $row){
                 if (
                     (
-                        $winnerIdOperator === '=' &&
-                        $row[$winnerIdIndex] === $winnerId
-                    ) ||
-                    (
-                        $winnerIdOperator !== '=' &&
-                        $row[$winnerIdIndex] !== $winnerId
+                        $row[$winnerOrParticipantIdIndex] === $id
                     )
                 ){
                     $filteredRows[]=$row;
                 }
             }
-            $winnersRows = $filteredRows;
-        }
-        if (isset ($raffled)) {
-            $raffledIndex = array_search('raffled',$winners->columns);
-            $filteredRows = array();
-            foreach ($winnersRows as $row){
-                if (
-                    (
-                        $raffledOperator === '=' &&
-                        $row[$raffledIndex] === $raffled
-                    ) ||
-                    (
-                        $raffledOperator !== '=' &&
-                        $row[$raffledIndex] !== $raffled
-                    )
-                ){
-                    $filteredRows[]=$row;
-                }
-            }
-            $winnersRows = $filteredRows;
+            $winnersOrParticipantsRows = $filteredRows;
         }
 
-        $filteredWinners->rows = $winnersRows;
+        $filteredWinnersOrParticipants->rows = $winnersOrParticipantsRows;
 
-        return $filteredWinners;
-    }
-    public function getParticipants(
-        $raffleId = null,
-        $participantId = null,
-        $joined = null,
-        $raffleIdOperator = null,
-        $participantIdOperator = null,
-        $joinedOperator = null,
-        $raffleIdPostOperator = null,
-        $participantIdPostOperator = null,
-        $tableId = null,
-        $fusionTablesService = null
-    ){
-        // operators should be '=' or '!=' or 'IN'
-        // post operators should be 'AND' (Fusion Tables does not support 'OR')
-        // (checks are not performed here)
-
-
-        if ($raffleIdOperator === null){ $raffleIdOperator = '='; }
-        if ($participantIdOperator === null){ $participantIdOperator = '='; }
-        if ($joinedOperator === null){ $joinedOperator = '='; }
-        if ($raffleIdPostOperator === null){ 
-            //$raffleIdPostOperator = 'AND'; 
-        }
-        if ($participantIdPostOperator === null){ 
-            //$participantIdPostOperator = 'AND'; 
-        }
-
-        if ($tableId === null || $tableId === 'participants') { $tableId = $this->tableIds['participants']; }
-        if ($fusionTablesService===null) {
-            //$fusionTablesService = $this->fusionTablesService;
-        }
-
-        $participants = $this->tablesMockup[$tableId];
-
-        $filteredParticipants = new stdClass();
-        $filteredParticipants->columns = $participants->columns;
-
-        $participantsRows = $participants->rows;
-        if (isset ($raffleId)) {
-            $raffleIdIndex = array_search('raffleid',$participants->columns);
-            $filteredRows = array();
-            foreach ($participantsRows as $row){
-                if (
-                    (
-                        $raffleIdOperator === '=' &&
-                        $row[$raffleIdIndex] === $raffleId
-                    ) ||
-                    (
-                        $raffleIdOperator !== '=' &&
-                        $row[$raffleIdIndex] !== $raffleId
-                    )
-                ){
-                    $filteredRows[]=$row;
-                }
-            }
-            $participantsRows = $filteredRows;
-        }
-        if (isset ($participantId)) {
-            $participantIdIndex = array_search('participantid',$participants->columns);
-            $filteredRows = array();
-            foreach ($participantsRows as $row){
-                if (
-                    (
-                        $participantIdOperator === '=' &&
-                        $row[$participantIdIndex] === $participantId
-                    ) ||
-                    (
-                        $raffleIdOperator !== '=' &&
-                        $row[$participantIdIndex] !== $participantId
-                    )
-                ){
-                    $filteredRows[]=$row;
-                }
-            }
-            $participantsRows = $filteredRows;
-        }
-        if (isset ($joined)) {
-            $joinedIndex = array_search('joined',$participants->columns);
-            $filteredRows = array();
-            foreach ($participantsRows as $row){
-                if (
-                    (
-                        $joinedOperator === '=' &&
-                        $row[$joinedIndex] === $joined
-                    ) ||
-                    (
-                        $joinedOperator !== '=' &&
-                        $row[$joinedIndex] !== $joined
-                    )
-                ){
-                    $filteredRows[]=$row;
-                }
-            }
-            $participantsRows = $filteredRows;
-        }
-
-        $filteredParticipants->rows = $participantsRows;
-        return $filteredParticipants;
+        return $filteredWinnersOrParticipants;
     }
     public function getResultsForRaffleId(
         $raffleId,
