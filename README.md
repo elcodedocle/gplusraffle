@@ -123,9 +123,6 @@ wget https://github.com/elcodedocle/uuid/archive/master.zip -O uuid.zip
 unzip uuid.zip -d /var/www/gplusraffle/vendor
 mv /var/www/gplusraffle/vendor/uuid-master /var/www/gplusraffle/vendor/uuid
 ```
-
-(You may also want to get [phpunit](http://phpunit.de), if you want to run some
- tests.)
  
 ### Set up: 
 
@@ -135,70 +132,69 @@ mv /var/www/gplusraffle/vendor/uuid-master /var/www/gplusraffle/vendor/uuid
  - Point your browser to `/admin/login` (`/main.php?collection=admin&action=login`) 
  and then to `/admin/install` (`/main.php?collection=admin&action=install`) 
 
-This will set the google account token the app will use to manage fusion tables. 
- 
-This token will be saved on adminConfig.php and will allow the app access to the 
-associated account's fusion tables. 
+This will set the google account offline token the app will use to manage 
+the Fusion Tables.
 
-You don't need to use the same google account you used for creating the app on the 
-developers console: You may even create a new google account just to keep the 
-app's tables if you want. 
+You don't need to use the same google account you used for creating the app on 
+the developers console: You may even create a new google account just to keep 
+the app's tables if you want. 
 
-Anyway, the token will only give the app offline access to the Fusion Tables and 
-basic profile info of that account (to retrieve the account id), so even if I've 
-screwed up and left some security hole on the auth process it should be a 
-reasonably safe deal no matter what account you use (I'm not implying that I 
-didn't put any effort on building a safe app, but bad things happen...) 
+The offline token, stored in `adminConfig.php`, will only give the app offline 
+access to the Fusion Tables managing and basic profile info of that account (to
+retrieve the account id).
 
 Users are only required basic profile info access (for the userid). 
 
 For your users' safety and your own I suggest using SSL on the server. And, 
 since I am at the moment too lazy and cheap to follow my own advice on the demo site 
 I've set up, if you are concerned about what somebody could do with access to your 
-account's basic profile info I urge you not to use it on a public/open connection.
+account's basic profile info I urge you not to use it on a public/open 
+non encrypted connection.
 
 ### How to use
 
  - You can now `/admin/logout` (`main.php?collection=admin&action=logout`) and go to 
  `/webapp` to log in as a regular user and check the app out.
 
-The web app, `/webapp`, will provide an HTML5 client interface to handle 
+The web app, `/webapp`, provides an HTML5 client interface to handle 
 requests and present JSON responses required to manage and participate on raffles.
 
 If you want to toy around with the API (maybe even implement a slicker client ;-)), 
-these are HTTP request actions available (all responses are JSON encoded, with 
+these are the HTTP request actions available (all responses are JSON encoded, with 
 resposne column names array and rows array contained on `columns` and `rows` fields 
 of the `data` response field):
 
 `/admin/login` - logs the user with admin scopes (FusionTables handling, basic 
-profile access)
+profile access).
 
 `/admin/install` - sets the current admin google account id and a new token to 
-handle fusion tables operations
+handle fusion tables operations.
 
 `/admin/uninstall` - removes the current admin google account id and token (the 
 fusion tables will remain stored on the account, but new ones will be created on 
-reinstall)
+reinstall).
 
 `/, /user/login` - logs in the user (html output with `authUrl` link), redirects 
-to `/webapp` on success if a web session has been opened (by visiting /webapp)
+to `/webapp` on success if a web session has been opened (by visiting /webapp).
 
-`/user/logout` - logs out the user
+`/user/logout` - logs out the user (an auto logout is performed when the session 
+expires, in which case a 401 error code is issued instead of the requested 
+response).
 
 `/raffle/create/description` - creates a raffle, returning its id, description, 
-creator (you), status (closed) and date of creation (now)
+creator (you), date of creation (now), privacy (public) and status (closed).
 
 `/raffle/delete/raffleid` - deletes `raffleid` (only the user who created it 
-can do this. WARNING: All data will be lost, and no confirmation is required!)
+can do this. WARNING: All data will be lost, and no confirmation is required!).
 
 `/raffle/list`, `/raffle/list/all` - lists (public) raffles (id, description,
-creator, status and date of creation)
+creator, status and date of creation).
 
 `/raffle/list/me` or `/raffle/list/user/joined/me` - lists raffles the current 
-user has joined (admin can list raffles joined by any userid)
+user has joined (admin can list raffles joined by any userid).
 
 `/raffle/list/mine` or `/raffle/list/user/created/me` - lists raffles the 
-current user has created (admin can list raffles created by any userid)
+current user has created (admin can list raffles created by any userid).
 
 `/raffle/list/raffle/raffleid` - lists raffle's participants (and winner, if 
 raffled). Any raffle, public or private, can be listed, and any user can join
@@ -214,38 +210,41 @@ of creation)
 
 `/raffle/open/raffleid` - opens the raffle, so users can join it
 
-`/raffle/close/raffleid`  - closes the raffle, no more users will be allowed to 
-join it, unless it's reopened
+`/raffle/close/raffleid`  - closes the raffle. No more users will be allowed to 
+join it, unless it's reopened.
 
 `/raffle/raffleid/limit` - raffles `raffleid` (only the user who created the raffle 
 can do this, and the raffle must be closed and have more than 0 participants. 
 It picks min(participants,limit) winners or returns the winner(s) if the raffle has 
-already been raffled)
+already been raffled).
 
-`/raffle/join/raffleid` - user joins `raffleid` (the raffle must be opened)
+`/raffle/join/raffleid` - user joins `raffleid` (the raffle must be opened).
 
-`/raffle/leave/raffleid` - user joins `raffleid` (the raffle must be opened)
+`/raffle/leave/raffleid` - user joins `raffleid` (the raffle must be opened).
 
-`/raffle/check/raffleid` - check who won the raffle (the raffle must be raffled)
+`/raffle/check/raffleid` - check who won the raffle (the raffle must be raffled).
 
 Regarding the DB schema, it's actually the simplest possible:
 
 - The raffles list is stored on a fusion table 'raffles' 
-(raffleid, description, creatorid, created, privacy, status)
+(raffleid, description, creatorid, created, privacy, status).
 
-- The winners list is stored on a fusion table 'winners' (raffleid, userid, raffled)
+- The winners list is stored on a fusion table 'winners' (raffleid, userid, raffled).
 
 - The raffles' participants lists are stored on a fusion table 'participants' 
-(userid, raffleid, comment, joined)
+(userid, raffleid, comment, joined).
 
-If you are into developing there are also some phpunit tests you can perform:
+(All dates are stored in UTC, reformatted to the local timezone in the web app 
+client)
+
+If you are into developing there are some phpunit tests you can perform:
 
 ```php
 cd tests
 phpunit --testsuite gplusraffle
 ```
 
-(If you are a developer and find a bug not catched by the tests and want to 
+(If you are a developer and find a bug not cached by the tests and want to 
 help me fix it, opening an issue by pull requesting a non passing test would 
 be swell :-))
 
@@ -257,33 +256,31 @@ be swell :-))
  of :-P)
 
 - v0.2 will implement private raffles that will not be listed to non 
-participants and will only be accessible through the provided link and users 
+participants and will only be accessible through the provided link, and users 
 who want to participate on those will join a requests table and the 
 creator/admin will have to accept them before they are pushed into the 
 participants table.
 
 ### Acks
 
-[The Google team](https://github.com/google/google-api-php-client). Their 
-Client PHP API 1.0.4 BETA is way more usable than Facebook's PHP SDK v4 (Full 
-disclosure: I did submit a pull request to Facebook about it and they told me 
-they liked the idea but they they'd instead incorporate it in their own
-way and release it soon, and they haven't done it yet. So, yeah, I'm not very 
-happy about it. That was already 6 weeks ago, guys! Come on!)
+[The Google team](https://github.com/google/google-api-php-client).
 
-The [twitter bootstrap team](https://github.com/twbs) (bootstrap)
+The [twitter bootstrap team](https://github.com/twbs) (bootstrap).
 
 [Allan Jardine](https://github.com/DataTables), the developer behind 
-[datatables](https://github.com/DataTables/DataTables)
+[datatables](https://github.com/DataTables/DataTables).
 
 [Mathias Rohnstock](https://github.com/drmonty), the developer behind 
-[tabletools](https://github.com/drmonty/datatables-tabletools)
+[tabletools](https://github.com/drmonty/datatables-tabletools).
 
 [Andrew Moore](http://www.php.net/manual/en/function.uniqid.php#94959), the 
-developer behind [the uuid class](https://github.com/elcodedocle/uuid)
+developer behind [the uuid class](https://github.com/elcodedocle/uuid).
 
 [Felix Gnass](https://github.com/fgnass/), the developer behind 
-[spin.js](http://fgnass.github.io/spin.js/)
+[spin.js](http://fgnass.github.io/spin.js/).
+
+[Pablo Cantero](https://github.com/phstc), the developer behind 
+[jquery-dateFormat](https://github.com/phstc/jquery-dateFormat)
 
 
 Enjoy!
