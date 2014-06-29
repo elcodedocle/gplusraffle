@@ -72,13 +72,6 @@ $subtitle = array(
     </head>
     <body>
         <div class="container" id="container">
-            <div id="preAjaxContent" style="display:none;">
-                <p>
-                    <?= 
-                    htmlentities(_("Loading gplusraffle. Please wait")); 
-                    ?><span id="dots"></span>
-                </p>
-            </div>
             <div id="postAjaxContent">
                 <div class="Flexible-container">
                     <div class="page-header" id="header">
@@ -300,7 +293,7 @@ $subtitle = array(
                                                         'collection':'raffle',
                                                         'action':'leave',
                                                         'raffleid': document.getElementById('raffleId').value.trim(),
-                                                        'subtitle': '<?=$subtitle['list']['result']?>'
+                                                        'subtitle': '<?=$subtitle['list']['me']?>'
                                                     }
                                                 );
                                             }
@@ -324,7 +317,7 @@ $subtitle = array(
                                                 'collection':'raffle',
                                                 'action':'list',
                                                 'raffleid': document.getElementById('raffleId').value.trim(),
-                                                'subtitle': '<?=$subtitle['list']['mine']?>'
+                                                'subtitle': '<?=$subtitle['list']['participants']?>'
                                             }
                                             );
                                         }
