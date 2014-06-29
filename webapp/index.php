@@ -49,9 +49,13 @@ $subtitle = array(
             rel="stylesheet" 
             type="text/css" 
         />
-        <script 
-            type="text/javascript" 
+        <script
+            type="text/javascript"
             src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"
+        ></script>
+        <script
+            type="text/javascript"
+            src="//cdnjs.cloudflare.com/ajax/libs/jquery-dateFormat/1.0/jquery.dateFormat.min.js"
         ></script>
         <script 
             type="text/javascript" 

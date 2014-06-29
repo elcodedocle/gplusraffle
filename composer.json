@@ -11,9 +11,10 @@
     "require": {
         "php": ">=5.3.0",
         "google/apiclient": "1.0.4-beta",
+        "elcodedocle/uuid": ">=1.0.0",
         "datatables/datatables": ">=1.9.4",
         "drmonty/datatables-tabletools": ">=2.1.5",
         "twbs/bootstrap": ">=3.0.0",
-        "elcodedocle/uuid": ">=1.0.0"
+        "phstc/jquery-dateformat": ">=1.0.0"
     }
 }

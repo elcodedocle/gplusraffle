@@ -50,7 +50,7 @@ function formatDateTimeString(dateTimeString){
             ),
         dateOffset = new Date(date.getTime()-timeZoneOffsetInMinutes*60*1000);
     
-    return dateOffset.toLocaleString() + ' ' + timeZoneString;
+    return $.format.date(dateOffset.getTime(), "yyyy/MM/dd HH:mm:ss") + ' ' + timeZoneString;
 }
 
 /**
