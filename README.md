@@ -8,7 +8,7 @@ gplusraffle by elcodedocle
  [![Build Status](https://travis-ci.org/elcodedocle/gplusraffle.svg?branch=master)](https://travis-ci.org/elcodedocle/gplusraffle)<br />
  [![Code Climate](https://codeclimate.com/github/elcodedocle/gplusraffle.png)](https://codeclimate.com/github/elcodedocle/gplusraffle)
  
-[![Test site snapshot](http://i.imgur.com/CcQ0cQs.png "http://www.geovolutions.com/gplusraffle/webapp Check it out live!")](http://www.geovolutions.com/gplusraffle/webapp)
+[![Test site snapshot](http://i.imgur.com/Hy1LfLf.png "http://www.geovolutions.com/gplusraffle/webapp Check it out live!")](http://www.geovolutions.com/gplusraffle/webapp)
 
 
 ### (De)Motivation
