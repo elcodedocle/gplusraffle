@@ -39,7 +39,7 @@ Tables Suck":
  2009.
  
  - Fusion Tables is an experimental project, which means it doesn't even offer 
- the chance to pay to increase you app's API access quota. Once you get pass 
+ the chance to pay to increase you app's API access quota. Once you get past 
  25000 requests/day (a single INSERT/UPDATE counts as 5), your app will be down
  until the next day. The same argument applies to a number of restrictions 
  such as table size, request and upload file size, etc.
