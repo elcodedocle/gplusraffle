@@ -369,6 +369,7 @@ $subtitle = array(
                                                     'collection':'raffle',
                                                     'action':'join',
                                                     'raffleid': document.getElementById('raffleId').value.trim(),
+                                                    'comment': document.getElementById('participantComment').value.trim(),
                                                     'subtitle': '<?=$subtitle['list']['participants']?>'
                                                 }
                                             )
