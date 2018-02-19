@@ -4,7 +4,7 @@
     "description": "Google API based raffle web app",
     "keywords": ["google", "google plus", "raffle", "web app"],
     "homepage": "https://github.com/elcodedocle/gplusraffle",
-    "license": "MIT-Expat",
+    "license": "MIT",
     "require-dev": {
         "phpunit/phpunit": "3.7.*"
     },
